@@ -27,15 +27,16 @@ tools:context="com.alizare.server.activities.LoginActivity">
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginRight="20dp"
                 android:layout_weight="1"
+                android:gravity="right|center_vertical"
                 android:text="ورود کاربر"
                 android:textColor="#ffffff"
-                android:textSize="22sp"
-                android:gravity="right|center_vertical"
-                android:layout_marginRight="20dp"/>
+                android:textSize="22sp" />
 
 
 
@@ -82,12 +83,13 @@ tools:context="com.alizare.server.activities.LoginActivity">
             android:id="@+id/username_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="شناسه کاربری"
             android:gravity="right"
-            android:textSize="20sp"
+            android:hint="شناسه کاربری"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="09035060124"
+            android:textSize="20sp" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -99,13 +101,14 @@ tools:context="com.alizare.server.activities.LoginActivity">
             android:id="@+id/password_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="رمز ورود"
             android:gravity="right"
-            android:textSize="20sp"
+            android:hint="رمز ورود"
             android:imeActionId="@+id/login"
             android:imeOptions="actionUnspecified"
             android:maxLines="1"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="123456"
+            android:textSize="20sp" />
 
     </android.support.design.widget.TextInputLayout>
 

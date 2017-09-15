@@ -1,33 +1,20 @@
 package com.alizare.server.activities;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.NetworkOnMainThreadException;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alizare.server.App;
 import com.alizare.server.R;
-import com.squareup.picasso.Picasso;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
@@ -40,24 +27,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-    public static Handler h;
+public class MyServices extends AppCompatActivity {
+
     private ArrayList<String> ServiceTitle;
     private LinearLayout container;
-    private Button btnSelect;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_my_services);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ServiceTitle = new ArrayList<String>();
-        container = (LinearLayout)findViewById(R.id.container);
-        btnSelect = (Button)findViewById(R.id.btn_select);
+        container = (LinearLayout)findViewById(R.id.ll_mysrvices);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -69,37 +52,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        h = new Handler();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        final Menu nav_Menu = navigationView.getMenu();
-
-        View hView =  navigationView.getHeaderView(0);
-
-        final TextView txtName = (TextView)hView.findViewById(R.id.txt_name);
-        final TextView txtEtebar = (TextView)hView.findViewById(R.id.txt_etebar);
-        final TextView txtTakhfif = (TextView)hView.findViewById(R.id.txt_takhfif);
-        final ImageView img = (ImageView) hView.findViewById(R.id.imageView);
-        // final Button btnExit = (Button)hView.findViewById(R.id.nav_gallery);
-
-
-        SharedPreferences prefs = getSharedPreferences("INFO", MODE_PRIVATE);
-
-        final String fullname = prefs.getString("fullname", "0");
-
-        txtName.setText(fullname);
-        txtEtebar.setText("اعتبار فعلی "+prefs.getString("credit", "0")+" ریال");
-        txtTakhfif.setText("درصد تخفیف "+prefs.getString("discountPercent", "0")+ " درصد");
-        Picasso.with(App.context).load(prefs.getString("picAddress", "0")).into(img);
-
-
-        MainActivity.AsyncCallWS task = new MainActivity.AsyncCallWS();
+        AsyncCallWS task = new AsyncCallWS();
         task.execute();
 
     }
@@ -136,8 +89,8 @@ public class MainActivity extends AppCompatActivity
 
     public void calculate() {
 
-        String SOAP_ACTION = "http://shiraz-service.ir/webServiceServer.php?wsdl#getRequestsList";
-        String METHOD_NAME = "getRequestsList";
+        String SOAP_ACTION = "http://shiraz-service.ir/webServiceServer.php?wsdl#getMyServices";
+        String METHOD_NAME = "getMyServices";
         String NAMESPACE = "http://shiraz-service.ir/webServiceServer.php?wsdl";
         String URL = "http://shiraz-service.ir/webServiceServer.php?wsdl";
 
@@ -180,7 +133,7 @@ public class MainActivity extends AppCompatActivity
                 //   smart = new Smartphone();
                 //  for (int j = 0; j < so.getPropertyCount(); j++) {
                 // smart.setProperty(j, so.getProperty(j));
-//                ServiceTitle.add(so.getProperty(5).toString());
+                ServiceTitle.add(so.getProperty(5).toString());
 
 
                 //  }
@@ -198,66 +151,4 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-
-
-        int id = item.getItemId();
-
-        if (id == R.id.nav_afzayesh_etebar) {
-            Intent intent = new Intent(MainActivity.this , AfzayeshEtebar.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_ghavanin) {
-            Intent intent = new Intent(MainActivity.this , Ghavanin.class);
-            startActivity(intent);
-
-
-        } else if (id == R.id.nav_tamas) {
-
-        } else if (id == R.id.nav_my_service) {
-            Intent intent = new Intent(MainActivity.this , MyServices.class);
-            startActivity(intent);
-
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }
