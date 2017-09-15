@@ -12,9 +12,9 @@
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_shirazservice"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_shirazservice"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
         <activity
@@ -34,10 +34,11 @@
         <activity
             android:name=".activities.MyServices"
             android:label="@string/title_activity_my_services"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".activities.Ghavanin"
             android:label="@string/title_activity_ghavanin"
+            android:theme="@style/AppThemeNoActionBar"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -46,6 +47,7 @@
         <activity
             android:name=".activities.AfzayeshEtebar"
             android:label="@string/title_activity_afzayesh_etebar"
+            android:theme="@style/AppThemeNoActionBar"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -54,6 +56,7 @@
         <activity
             android:name=".activities.InsertPayInfo"
             android:label="@string/title_activity_insert_pay_info"
+            android:theme="@style/AppThemeNoActionBar"
             android:parentActivityName=".activities.AfzayeshEtebar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

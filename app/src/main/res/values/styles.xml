@@ -3,9 +3,17 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#444153</item>
-        <item name="colorPrimaryDark">#383547</item>
-        <item name="colorAccent">#30d1d5</item>
+        <item name="colorPrimary">#392323</item>
+        <item name="colorPrimaryDark">#291818</item>
+        <item name="colorAccent">#e7393a</item>
+        <item name="android:typeface">serif</item>
+    </style>
+
+    <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#392323</item>
+        <item name="colorPrimaryDark">#291818</item>
+        <item name="colorAccent">#e7393a</item>
         <item name="android:typeface">serif</item>
     </style>
 
@@ -13,8 +21,10 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:typeface">serif</item>
-        <item name="colorButtonNormal">#5a566e</item>
+        <item name="colorButtonNormal">#ab0001</item>
     </style>
+
+
 
 
     <style name="AppTheme.float" parent="Theme.AppCompat.Dialog">

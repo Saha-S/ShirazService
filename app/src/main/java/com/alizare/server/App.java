@@ -78,7 +78,7 @@ public class App extends Application {
     public static void      CustomToast(String messgae) {
 
         LinearLayout layout=new LinearLayout(context);
-        layout.setBackgroundColor(Color.parseColor("#444153"));
+        layout.setBackgroundColor(Color.parseColor("#392323"));
         TextView view=new TextView(context);
         view.setText(messgae);
         view.setTextColor(Color.parseColor("#FFFFFF"));

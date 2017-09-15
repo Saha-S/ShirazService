@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.alizare.server.App;
 import com.alizare.server.R;
 
 import org.ksoap2.SoapEnvelope;
@@ -125,7 +126,7 @@ public class Ghavanin extends AppCompatActivity {
                     {
                         public void run()
                         {
-                            txtRules.setText(fullText);
+                            txtRules.setText(fullText.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " ").replaceAll("&nbsp;"," "));
                         }
                     });
                 }

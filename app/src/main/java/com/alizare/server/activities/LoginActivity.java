@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         etusername  =(EditText) findViewById(R.id.username_et);
         etpassword  =(EditText) findViewById(R.id.password_et);
         btnlogin    =(Button)   findViewById(R.id.login_btn);
+        pblogin     =(ProgressBar)findViewById(R.id.login_progress);
 
 
         btnlogin.setOnClickListener(new View.OnClickListener() {
@@ -63,12 +64,11 @@ public class LoginActivity extends AppCompatActivity {
     private class AsyncCallWS extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected void onPreExecute() {
-        }
+        protected void onPreExecute() { pblogin.setVisibility(View.VISIBLE);}
 
         @Override
         protected Void doInBackground(Void... params) {
-            calculate();
+            LoginTask();
             return null;
         }
 
@@ -88,11 +88,17 @@ public class LoginActivity extends AppCompatActivity {
                 container.addView(child);
             }
 */
+
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            //finish();
+            pblogin.setVisibility(View.INVISIBLE);
         }
 
     }
 
-    public void calculate() {
+    public void LoginTask() {
+
 
         String SOAP_ACTION = "http://shiraz-service.ir/webServiceServer.php?wsdl#getServiceManInfo";
         String METHOD_NAME = "getServiceManInfo";
@@ -162,9 +168,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.commit();
 
 
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+
             } if(result.getPropertyAsString(0).equals("-1") || result.getPropertyAsString(0).equals("-1")){
                 new Thread()
                 {
@@ -224,9 +228,7 @@ public class LoginActivity extends AppCompatActivity {
                         LoginActivity.this.runOnUiThread(new Runnable()
                         {
                             public void run()
-                            {
-                                App.CustomToast(" خطایی رخ داده است");
-                            }
+                            {App.CustomToast("خوش آمدید");}
                         });
                     }
                 }.start();
