@@ -1,11 +1,13 @@
 package com.alizare.server.activities;
 
-import android.app.ProgressDialog;
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import com.alizare.server.R;
@@ -18,39 +20,25 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Vector;
 
-public class Ghavanin extends AppCompatActivity {
+public class Filter extends Activity {
 
-    private TextView txtRules;
-    private String fullText;
-    private ProgressDialog pd;
-
+    private ArrayList<String> ServiceArea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ghavanin);
+        setContentView(R.layout.activity_filter);
 
-        txtRules = (TextView) findViewById(R.id.txtRules);
-        pd = new ProgressDialog(Ghavanin.this);
-        pd.setMessage("لطفا صبر کنید..");
-        pd.show();
-
-
-        Ghavanin.AsyncCallWS task = new Ghavanin.AsyncCallWS();
+        ServiceArea = new ArrayList<String>();
+        Filter.AsyncCallWS task = new Filter.AsyncCallWS();
         task.execute();
 
-        txtRules.setText(fullText);
-
     }
-
-
-
-
-    /////////////////// web servise /////////////////////
-
-
     private class AsyncCallWS extends AsyncTask<Void, Void, Void> {
+
 
         @Override
         protected void onPreExecute() {
@@ -64,28 +52,27 @@ public class Ghavanin extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
+//            Toast.makeText(ActivitygetAreas.this, "Response" + resultString.toString(), Toast.LENGTH_LONG).show();
+            LayoutInflater inflater = (LayoutInflater)getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
-            //     App.CustomToast("وارد شدید");
-            //  Toast.makeText(LoginActivity.this, "وارد شدید" , Toast.LENGTH_LONG).show();
-            // LayoutInflater inflater = (LayoutInflater)getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-      /*      for(int i = 0; i< areaNames.size(); i++) {
-                View child = inflater.inflate(R.layout.layout_bank, null, false);
-                TextView areaName = (TextView) child.findViewById(R.id.bank_name);
-                TextView areaId = (TextView) child.findViewById(R.id.bank_code);
+            for(int i = 0; i< ServiceArea.size(); i++) {
 
-                areaName.setText(areaNames.get(i));
-                areaId.setText(areaIds.get(i));
-                container.addView(child);
+                final View child = inflater.inflate(R.layout.item_my_service, null, false);
+                TextView areaName = (TextView) child.findViewById(R.id.txt_area);
+
             }
-*/
+
+
+
+
         }
 
     }
 
     public void calculate() {
 
-        String SOAP_ACTION = "http://shiraz-service.ir/webServiceServer.php?wsdl#getStaticPagesText";
-        String METHOD_NAME = "getStaticPagesText";
+        String SOAP_ACTION = "http://shiraz-service.ir/webServiceServer.php?wsdl#getAreas";
+        String METHOD_NAME = "getAreas";
         String NAMESPACE = "http://shiraz-service.ir/webServiceServer.php?wsdl";
         String URL = "http://shiraz-service.ir/webServiceServer.php?wsdl";
 
@@ -93,11 +80,11 @@ public class Ghavanin extends AppCompatActivity {
 
 
         try {
+            SharedPreferences prefs = getSharedPreferences("INFO", MODE_PRIVATE);
+
             SoapObject Request = new SoapObject(NAMESPACE, METHOD_NAME);
             Request.addProperty("tokenId", "2085");
             Request.addProperty("tokenKey", "W/*@!&R~k^Ma$#._=N");
-            Request.addProperty("type", "1");
-            //Request.addProperty("Celsius", getCel);
 
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
@@ -118,27 +105,19 @@ public class Ghavanin extends AppCompatActivity {
 
             androidHttpTransport.call(SOAP_ACTION, envelope);
 
-            SoapObject result = (SoapObject) envelope.getResponse();
+            Vector<SoapObject> result = (Vector<SoapObject>) envelope.getResponse();
+            Log.i("teeeees", result.toString());
 
-            fullText =result.getPropertyAsString(3);
-            Log.i("chiiii3", fullText.toString());
-            new Thread()
-            {
-                public void run()
-                {
-                    Ghavanin.this.runOnUiThread(new Runnable()
-                    {
-                        public void run()
-                        {
-                            txtRules.setText(fullText.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", " ").replaceAll("&nbsp;"," "));
-                            pd.hide();
-                        }
-                    });
-                }
-            }.start();
+            int length = result.size();
+
+           /* for (int i = 0; i < length; ++i) {
+                SoapObject so = result.get(i);
+                ServiceArea.add(so.getProperty(3).toString());
 
 
-
+                //  }
+            }
+*/
         } catch (SoapFault soapFault) {
             soapFault.printStackTrace();
         } catch (IOException e) {
@@ -150,7 +129,5 @@ public class Ghavanin extends AppCompatActivity {
         }
 
     }
-
-
 
 }

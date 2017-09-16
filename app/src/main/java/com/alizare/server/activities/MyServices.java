@@ -1,11 +1,12 @@
 package com.alizare.server.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,8 +30,18 @@ import java.util.Vector;
 
 public class MyServices extends AppCompatActivity {
 
+    private ArrayList<String> ServiceArea;
+    private ArrayList<String> ServiceState;
     private ArrayList<String> ServiceTitle;
+    private ArrayList<String> ServiceFName;
+    private ArrayList<String> ServiceLName;
+    private ArrayList<String> ServicePhone;
+    private ArrayList<String> ServiceAddress;
+    private ArrayList<String> ServiceDesc;
     private LinearLayout container;
+    public static String stitle , fullname , phone , address , desc;
+    private ProgressDialog pd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,24 +50,32 @@ public class MyServices extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        pd = new ProgressDialog(MyServices.this);
+        pd.setMessage("لطفا صبر کنید..");
+        pd.show();
+
+
         ServiceTitle = new ArrayList<String>();
+        ServiceState = new ArrayList<String>();
+        ServiceArea = new ArrayList<String>();
+
+        ServiceFName = new ArrayList<String>();
+        ServiceLName = new ArrayList<String>();
+        ServicePhone = new ArrayList<String>();
+        ServiceAddress = new ArrayList<String>();
+        ServiceDesc = new ArrayList<String>();
+
         container = (LinearLayout)findViewById(R.id.ll_mysrvices);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         AsyncCallWS task = new AsyncCallWS();
         task.execute();
 
     }
     private class AsyncCallWS extends AsyncTask<Void, Void, Void> {
+
+        private int index;
 
         @Override
         protected void onPreExecute() {
@@ -72,16 +91,44 @@ public class MyServices extends AppCompatActivity {
         protected void onPostExecute(Void result) {
 //            Toast.makeText(ActivitygetAreas.this, "Response" + resultString.toString(), Toast.LENGTH_LONG).show();
             LayoutInflater inflater = (LayoutInflater)getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+
             for(int i = 0; i< ServiceTitle.size(); i++) {
 
-                View child = inflater.inflate(R.layout.item_my_service, null, false);
-                TextView areaName = (TextView) child.findViewById(R.id.bank_name);
+                final View child = inflater.inflate(R.layout.item_my_service, null, false);
+                TextView areaName = (TextView) child.findViewById(R.id.txt_area);
+                TextView title = (TextView) child.findViewById(R.id.txt_title);
+                TextView state = (TextView) child.findViewById(R.id.txt_state);
+                LinearLayout item = (LinearLayout) child.findViewById(R.id.ll_item);
 
-                areaName.setText(ServiceTitle.get(i));
+                areaName.setText("محدوده ی "+ServiceArea.get(i));
+                title.setText(ServiceTitle.get(i));
+                state.setText(ServiceState.get(i));
                 container.addView(child);
 
+                item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        stitle = ServiceTitle.get(index);
+                        phone = ServicePhone.get(index);
+                        desc = ServiceDesc.get(index);
+                        address = ServiceAddress.get(index);
+                        fullname = ServiceFName.get(index) + " " +ServiceLName.get(index);
+                        index = ((LinearLayout) child.getParent()).indexOfChild(child);
+                        Intent intent = new Intent(MyServices.this, MyServicesDetailes.class);
+                        startActivity(intent);
+
+
+
+
+                    }
+                });
 
             }
+            pd.hide();
+
+
+
 
         }
 
@@ -98,12 +145,14 @@ public class MyServices extends AppCompatActivity {
 
 
         try {
+            SharedPreferences prefs = getSharedPreferences("INFO", MODE_PRIVATE);
+
             SoapObject Request = new SoapObject(NAMESPACE, METHOD_NAME);
             Request.addProperty("tokenId", "2085");
             Request.addProperty("tokenKey", "W/*@!&R~k^Ma$#._=N");
             Request.addProperty("servicemanId", "2");
-            Request.addProperty("state", "2");
-            //Request.addProperty("Celsius", getCel);
+            Request.addProperty("state", "");
+            // Request.addProperty("servicemanId", prefs.getString("servicemanId", "0"));
 
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
@@ -125,6 +174,7 @@ public class MyServices extends AppCompatActivity {
             androidHttpTransport.call(SOAP_ACTION, envelope);
 
             Vector<SoapObject> result = (Vector<SoapObject>) envelope.getResponse();
+            Log.i("teeeees", result.toString());
 
             int length = result.size();
 
@@ -134,6 +184,13 @@ public class MyServices extends AppCompatActivity {
                 //  for (int j = 0; j < so.getPropertyCount(); j++) {
                 // smart.setProperty(j, so.getProperty(j));
                 ServiceTitle.add(so.getProperty(5).toString());
+                ServiceArea.add(so.getProperty(13).toString());
+                ServiceState.add(so.getProperty(30).toString());
+                ServiceFName.add(so.getProperty(15).toString());
+                ServiceLName.add(so.getProperty(14).toString());
+                ServicePhone.add(so.getProperty(17).toString());
+                ServiceAddress.add(so.getProperty(18).toString());
+                ServiceDesc.add(so.getProperty(19).toString());
 
 
                 //  }

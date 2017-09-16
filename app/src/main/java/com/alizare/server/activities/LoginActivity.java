@@ -27,8 +27,8 @@ import java.io.IOException;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText etusername,etpassword;
-    Button   btnlogin;
+    EditText etusername, etpassword;
+    Button btnlogin;
 
     ProgressBar pblogin;
 
@@ -37,10 +37,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        etusername  =(EditText) findViewById(R.id.username_et);
-        etpassword  =(EditText) findViewById(R.id.password_et);
-        btnlogin    =(Button)   findViewById(R.id.login_btn);
-        pblogin     =(ProgressBar)findViewById(R.id.login_progress);
+        etusername = (EditText) findViewById(R.id.username_et);
+        etpassword = (EditText) findViewById(R.id.password_et);
+        btnlogin = (Button) findViewById(R.id.login_btn);
+        pblogin = (ProgressBar) findViewById(R.id.login_progress);
 
 
         btnlogin.setOnClickListener(new View.OnClickListener() {
@@ -56,15 +56,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
-
     /////////////////// web servise /////////////////////
 
 
     private class AsyncCallWS extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected void onPreExecute() { pblogin.setVisibility(View.VISIBLE);}
+        protected void onPreExecute() {
+            pblogin.setVisibility(View.VISIBLE);
+        }
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -75,9 +75,9 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
 
-           //     App.CustomToast("وارد شدید");
-          //  Toast.makeText(LoginActivity.this, "وارد شدید" , Toast.LENGTH_LONG).show();
-           // LayoutInflater inflater = (LayoutInflater)getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            //     App.CustomToast("وارد شدید");
+            //  Toast.makeText(LoginActivity.this, "وارد شدید" , Toast.LENGTH_LONG).show();
+            // LayoutInflater inflater = (LayoutInflater)getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
       /*      for(int i = 0; i< areaNames.size(); i++) {
                 View child = inflater.inflate(R.layout.layout_bank, null, false);
                 TextView areaName = (TextView) child.findViewById(R.id.bank_name);
@@ -89,10 +89,6 @@ public class LoginActivity extends AppCompatActivity {
             }
 */
 
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            //finish();
-            pblogin.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -137,9 +133,9 @@ public class LoginActivity extends AppCompatActivity {
 
             SoapObject result = (SoapObject) envelope.getResponse();
 
-            Log.i("khkhkhkhkhk" , result.getPropertyAsString(0));
+            Log.i("khkhkhkhkhk", result.getPropertyAsString(0));
 
-            if(result.getPropertyAsString(0).equals("0")) {
+            if (result.getPropertyAsString(0).equals("0")) {
 
                 String fname = result.getPropertyAsString(2);
                 String fullname = fname + " " + result.getPropertyAsString(3);
@@ -148,91 +144,115 @@ public class LoginActivity extends AppCompatActivity {
 
                 SharedPreferences.Editor editor = getSharedPreferences("INFO", MODE_PRIVATE).edit();
                 editor.putString("fullname", fullname.toString());
-                editor.putString("picAddress", result.getPropertyAsString(4));
-                editor.putString("personTypeIdx", result.getPropertyAsString(5));
-                editor.putString("personType", result.getPropertyAsString(6));
-                editor.putString("titleId", result.getPropertyAsString(7));
-                editor.putString("title", result.getPropertyAsString(8));
-                editor.putString("provinceId", result.getPropertyAsString(9));
-                editor.putString("province", result.getPropertyAsString(10));
-                editor.putString("cityId", result.getPropertyAsString(11));
-//                editor.putString("city", result.getPropertyAsString(12));
-                editor.putString("areaId", result.getPropertyAsString(13));
-                editor.putString("area", result.getPropertyAsString(14));
-                editor.putString("address", result.getPropertyAsString(15));
-                editor.putString("totalPoint", result.getPropertyAsString(16));
-                editor.putString("rating", result.getPropertyAsString(17));
-                editor.putString("credit", result.getPropertyAsString(18));
-                editor.putString("tempCredit", result.getPropertyAsString(19));
-//            editor.putString("discountPercent", result.getPropertyAsString(20));
+                editor.putString("servicemanId", result.getPropertyAsString(4));
+                editor.putString("picAddress", result.getPropertyAsString(5));
+                editor.putString("personTypeIdx", result.getPropertyAsString(6));
+                editor.putString("personType", result.getPropertyAsString(7));
+                editor.putString("titleId", result.getPropertyAsString(8));
+                editor.putString("title", result.getPropertyAsString(9));
+                editor.putString("provinceId", result.getPropertyAsString(10));
+                editor.putString("province", result.getPropertyAsString(11));
+                editor.putString("cityId", result.getPropertyAsString(12));
+//                editor.putString("city", result.getPropertyAsString(13));
+                editor.putString("areaId", result.getPropertyAsString(14));
+                editor.putString("area", result.getPropertyAsString(15));
+                editor.putString("address", result.getPropertyAsString(16));
+                editor.putString("totalPoint", result.getPropertyAsString(17));
+                editor.putString("rating", result.getPropertyAsString(18));
+                editor.putString("credit", result.getPropertyAsString(19));
+                editor.putString("tempCredit", result.getPropertyAsString(20));
+//            editor.putString("discountPercent", result.getPropertyAsString(21));
                 editor.commit();
+                new Thread() {
+                    public void run() {
+                        LoginActivity.this.runOnUiThread(new Runnable() {
+                            public void run() {
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                //finish();
+                                pblogin.setVisibility(View.INVISIBLE);
+                                {
+                                    App.CustomToast("خوش آمدید");
+                                }
 
-
-
-            } if(result.getPropertyAsString(0).equals("-1") || result.getPropertyAsString(0).equals("-1")){
-                new Thread()
-                {
-                    public void run()
-                    {
-                        LoginActivity.this.runOnUiThread(new Runnable()
-                        {
-                            public void run()
-                            {
-                                App.CustomToast(" ﻧﺎم ﮐﺎرﺑﺮی / رﻣﺰ ﻋﺒﻮر وارد ﺷﺪه ﻧﺎﻣﻌﺘﺒﺮ اﺳت ");
                             }
                         });
                     }
                 }.start();
 
 
-            }
-             if(result.getPropertyAsString(0).equals("-3")){
-                new Thread()
-                {
-                    public void run()
-                    {
-                        LoginActivity.this.runOnUiThread(new Runnable()
-                        {
-                            public void run()
-                            {
-                                App.CustomToast(" سرویس دهنده غیر فعال شده است");
-                            }
-                        });
-                    }
-                }.start();
+            } else {
+                if (result.getPropertyAsString(0).equals("-1") || result.getPropertyAsString(0).equals("-1")) {
+                    new Thread() {
+                        public void run() {
+                            LoginActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    App.CustomToast(" ﻧﺎم ﮐﺎرﺑﺮی / رﻣﺰ ﻋﺒﻮر وارد ﺷﺪه ﻧﺎﻣﻌﺘﺒﺮ اﺳت ");
+                                    pblogin.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                        }
+                    }.start();
 
 
-            }
-             if(result.getPropertyAsString(0).equals("-1000")){
-                new Thread()
-                {
-                    public void run()
-                    {
-                        LoginActivity.this.runOnUiThread(new Runnable()
-                        {
-                            public void run()
-                            {
-                                App.CustomToast(" کلید تبادل درج شده اشتباه است");
-                            }
-                        });
-                    }
-                }.start();
+                }
+
+                if (result.getPropertyAsString(0).equals("-3")) {
+                    new Thread() {
+                        public void run() {
+                            LoginActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    App.CustomToast(" سرویس دهنده غیر فعال شده است");
+                                    pblogin.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                        }
+                    }.start();
 
 
-            }
-            else{
-                new Thread()
-                {
-                    public void run()
-                    {
-                        LoginActivity.this.runOnUiThread(new Runnable()
-                        {
-                            public void run()
-                            {App.CustomToast("خوش آمدید");}
-                        });
-                    }
-                }.start();
+                }
+                if (result.getPropertyAsString(0).equals("-1000")) {
+                    new Thread() {
+                        public void run() {
+                            LoginActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    App.CustomToast(" کلید تبادل درج شده اشتباه است");
+                                    pblogin.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                        }
+                    }.start();
 
+
+                }
+                if (result.getPropertyAsString(0).equals("-4")) {
+                    new Thread() {
+                        public void run() {
+                            LoginActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    App.CustomToast(" شماره موبایل وارد شده اشتباه است.");
+                                    pblogin.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                        }
+                    }.start();
+
+
+                }
+                else {
+                    new Thread() {
+                        public void run() {
+                            LoginActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    App.CustomToast(" خطایی پیش آمده است .");
+                                    pblogin.setVisibility(View.INVISIBLE);
+                                }
+                            });
+                        }
+                    }.start();
+
+
+                }
 
             }
 
@@ -248,7 +268,8 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
-
-
-
 }
+
+
+
+

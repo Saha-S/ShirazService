@@ -134,7 +134,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:hint="نام و نام خانوداگی صاحب کارت"
-                    android:inputType="number"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textSize="20sp" />
@@ -153,7 +152,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:hint="تاریخ و ساعت واریز"
-                    android:inputType="number"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textSize="20sp" />

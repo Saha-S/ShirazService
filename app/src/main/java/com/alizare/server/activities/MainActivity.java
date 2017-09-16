@@ -7,9 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.NetworkOnMainThreadException;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -45,7 +44,9 @@ public class MainActivity extends AppCompatActivity
     public static Handler h;
     private ArrayList<String> ServiceTitle;
     private LinearLayout container;
-    private Button btnSelect;
+    private Button btnSelect , btnFilter;
+    private ImageButton ibmenu;
+    private TextView tvtitle;
 
 
     @Override
@@ -58,14 +59,21 @@ public class MainActivity extends AppCompatActivity
         ServiceTitle = new ArrayList<String>();
         container = (LinearLayout)findViewById(R.id.container);
         btnSelect = (Button)findViewById(R.id.btn_select);
+        btnFilter = (Button)findViewById(R.id.btn_filter);
+        ibmenu=(ImageButton) findViewById(R.id.ib_menu);
+        tvtitle=(TextView) findViewById(R.id.tv_mainpage_title);
+//        Typeface tfmorvarid= Typeface.createFromAsset(App.context.getAssets(), "morvarid.ttf");
+     //   tvtitle.setTypeface(tfmorvarid);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+
+
+        btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this , Filter.class);
+                startActivity(intent);
             }
         });
 
@@ -81,6 +89,20 @@ public class MainActivity extends AppCompatActivity
         final Menu nav_Menu = navigationView.getMenu();
 
         View hView =  navigationView.getHeaderView(0);
+
+        ibmenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
+                } else {
+                    drawer.openDrawer(GravityCompat.END);
+                }
+
+            }
+        });
+
 
         final TextView txtName = (TextView)hView.findViewById(R.id.txt_name);
         final TextView txtEtebar = (TextView)hView.findViewById(R.id.txt_etebar);
@@ -122,7 +144,7 @@ public class MainActivity extends AppCompatActivity
             for(int i = 0; i< ServiceTitle.size(); i++) {
 
                 View child = inflater.inflate(R.layout.item_my_service, null, false);
-                TextView areaName = (TextView) child.findViewById(R.id.bank_name);
+                TextView areaName = (TextView) child.findViewById(R.id.txt_area);
 
                 areaName.setText(ServiceTitle.get(i));
                 container.addView(child);
@@ -202,10 +224,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawer.isDrawerOpen(GravityCompat.END)) {
+            drawer.closeDrawer(GravityCompat.END);
         } else {
-            super.onBackPressed();
+            drawer.openDrawer(GravityCompat.END);
         }
     }
 
@@ -256,8 +278,6 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }

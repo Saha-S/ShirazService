@@ -1,11 +1,14 @@
 package com.alizare.server.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -28,6 +31,7 @@ public class InsertPayInfo extends AppCompatActivity {
     RadioGroup radioTypeGroup;
     RadioButton radioTypeButton;
     int type;
+    Button btnInsert;
 
 
 
@@ -42,20 +46,19 @@ public class InsertPayInfo extends AppCompatActivity {
         edtTime = (EditText) findViewById(R.id.edt_time);
         edtPeygiri = (EditText) findViewById(R.id.edt_rahgiri);
         edtPrice = (EditText) findViewById(R.id.edt_price);
+        btnInsert = (Button) findViewById(R.id.btn_insert);
 
-        int selectedId = radioTypeGroup.getCheckedRadioButtonId();
-        radioTypeButton = (RadioButton) findViewById(selectedId);
 
-        if (radioTypeButton != null) {
+        btnInsert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InsertPayInfo.AsyncCallWS task = new InsertPayInfo.AsyncCallWS();
+                task.execute();
 
-           if( radioTypeButton.getText().toString().equals("کارت به کارت")){
-               type = 1;
-           }
-            if( radioTypeButton.getText().toString().equals("واریز به حساب")){
-                type = 2;
             }
+        });
 
-        }
+
 
 
 
@@ -104,16 +107,32 @@ public class InsertPayInfo extends AppCompatActivity {
 
 
         try {
+            SharedPreferences prefs = getSharedPreferences("INFO", MODE_PRIVATE);
+
             SoapObject Request = new SoapObject(NAMESPACE, METHOD_NAME);
+            int selectedId = radioTypeGroup.getCheckedRadioButtonId();
+            radioTypeButton = (RadioButton) findViewById(selectedId);
+
+            if (radioTypeButton != null) {
+
+                if( radioTypeButton.getText().toString().equals("کارت به کارت")){
+                    type = 1;
+                }
+                if( radioTypeButton.getText().toString().equals("واریز به حساب")){
+                    type = 2;
+                }
+            }
+
+
             Request.addProperty("tokenId", "2085");
             Request.addProperty("tokenKey", "W/*@!&R~k^Ma$#._=N");
-            Request.addProperty("servicemanId", "");
-            Request.addProperty("type", "");
-            Request.addProperty("cardNo", "");
-            Request.addProperty("fullName", "");
-            Request.addProperty("trackingCode", "");
-            Request.addProperty("price", "");
-            Request.addProperty("depositTime", "");
+            Request.addProperty("servicemanId",prefs.getString("servicemanId", "0"));
+            Request.addProperty("type", type);
+            Request.addProperty("cardNo", edtShomareCart.getText().toString());
+            Request.addProperty("fullName", edtName.getText().toString());
+            Request.addProperty("trackingCode", edtPeygiri.getText().toString());
+            Request.addProperty("price", edtPrice.getText().toString());
+            Request.addProperty("depositTime", "2");
             //Request.addProperty("ip", etpassword.getText().toString());
             //Request.addProperty("Celsius", getCel);
 
@@ -142,13 +161,41 @@ public class InsertPayInfo extends AppCompatActivity {
             if(result.getPropertyAsString(0).equals("0")) {
 
                 Log.i("chiiii3", result.toString());
-                App.CustomToast("اطلاعات با موفقیت ثبت شد");
+                new Thread()
+                {
+                    public void run()
+                    {
+                        InsertPayInfo.this.runOnUiThread(new Runnable()
+                        {
+                            public void run()
+                            {
+                                App.CustomToast("اطلاعات با موفقیت ثبت شد");
+                                Intent intent = new Intent(InsertPayInfo.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
 
-                Intent intent = new Intent(InsertPayInfo.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                            }
+                        });
+                    }
+                }.start();
+
+
             } else {
-                App.CustomToast("خطایی رخ داده است . لطفا مجددا امتحان کنید.");
+                new Thread()
+                {
+                    public void run()
+                    {
+                        InsertPayInfo.this.runOnUiThread(new Runnable()
+                        {
+                            public void run()
+                            {
+                                App.CustomToast("خطایی رخ داده است . لطفا مجددا امتحان کنید.");
+
+                            }
+                        });
+                    }
+                }.start();
+
             }
 
 

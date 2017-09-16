@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Shiraz Service</string>
+    <string name="app_name">شیراز سرویس</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -14,4 +14,5 @@
     <string name="title_activity_insert_pay_info">ورود اطلاعات واریز</string>
     <string name="insertInfo">ثبت اطلاعات حسابی که باید از آن واریز کنید.</string>
     <string name="insert">پس از تایید توسط کاشناسان اعتبار شما افزایش خواهد یافت</string>
+    <string name="title_activity_my_services2">نمایش اطلاعات دقیق سرویس</string>
 </resources>
