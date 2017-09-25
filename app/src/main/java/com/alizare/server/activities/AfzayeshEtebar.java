@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -33,6 +34,15 @@ public class AfzayeshEtebar extends AppCompatActivity {
         txtEtebar = (TextView) findViewById(R.id.txt_etebar);
         txtMeghdarEtebar = (TextView) findViewById(R.id.txt_etebar_taghiir);
         txtEtebarnaahaii = (TextView) findViewById(R.id.txt_etebar_nahaii);
+
+        ImageButton back = (ImageButton)  findViewById(R.id.back_ib);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
 
         btn10 = (ToggleButton) findViewById(R.id.btn_10);
         btn20 = (ToggleButton) findViewById(R.id.btn_20);

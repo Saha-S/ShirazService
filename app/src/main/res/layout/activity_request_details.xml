@@ -39,7 +39,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:gravity="right|center_vertical"
-                    android:text="@string/title_activity_my_services"
+                    android:text="نمایش اطلاعات دقیق درخواست"
                     android:textColor="#ffffff"
                     android:textSize="22sp" />
 
@@ -51,6 +51,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_my_services" />
+    <include layout="@layout/content_request_details" />
 
 </android.support.design.widget.CoordinatorLayout>

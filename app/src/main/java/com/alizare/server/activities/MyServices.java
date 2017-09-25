@@ -2,19 +2,28 @@ package com.alizare.server.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.alizare.server.App;
 import com.alizare.server.R;
 
 import org.ksoap2.SoapEnvelope;
@@ -25,22 +34,25 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Vector;
 
 public class MyServices extends AppCompatActivity {
 
     private ArrayList<String> ServiceArea;
-    private ArrayList<String> ServiceState;
+    private ArrayList<String> ServicePrice;
     private ArrayList<String> ServiceTitle;
-    private ArrayList<String> ServiceFName;
-    private ArrayList<String> ServiceLName;
-    private ArrayList<String> ServicePhone;
-    private ArrayList<String> ServiceAddress;
+    private ArrayList<String> ServiceCat;
+    private ArrayList<String> ServiceTime;
+    private ArrayList<String> ServiceStat;
+    private ArrayList<String> ServiceOlaviat;
     private ArrayList<String> ServiceDesc;
     private LinearLayout container;
-    public static String stitle , fullname , phone , address , desc;
+    public static String stitle , cat, area, time, desc , stat , olaviat, price;
     private ProgressDialog pd;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private RatingBar ratingbar1;
 
 
     @Override
@@ -50,27 +62,83 @@ public class MyServices extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        pd = new ProgressDialog(MyServices.this);
-        pd.setMessage("لطفا صبر کنید..");
-        pd.show();
+        ImageButton back = (ImageButton)  findViewById(R.id.back_ib);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
 
         ServiceTitle = new ArrayList<String>();
-        ServiceState = new ArrayList<String>();
+        ServicePrice = new ArrayList<String>();
         ServiceArea = new ArrayList<String>();
 
-        ServiceFName = new ArrayList<String>();
-        ServiceLName = new ArrayList<String>();
-        ServicePhone = new ArrayList<String>();
-        ServiceAddress = new ArrayList<String>();
+        ServiceCat = new ArrayList<String>();
+        ServiceTime = new ArrayList<String>();
+        ServiceStat = new ArrayList<String>();
+        ServiceOlaviat = new ArrayList<String>();
         ServiceDesc = new ArrayList<String>();
 
         container = (LinearLayout)findViewById(R.id.ll_mysrvices);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe);
 
 
 
-        AsyncCallWS task = new AsyncCallWS();
-        task.execute();
+
+        ConnectivityManager connManager = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (mWifi.isConnected() || isMobileDataEnabled()) {
+            swipeRefreshLayout.setRefreshing(true);
+
+            AsyncCallWS task = new AsyncCallWS();
+            task.execute();
+        }else {
+            App.CustomToast("خطا: ارتباط اینترنت را چک نمایید");
+            swipeRefreshLayout.setRefreshing(false);
+        }
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                ConnectivityManager connManager = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+                if (mWifi.isConnected() || isMobileDataEnabled()) {
+                    //   ServiceTime.clear();
+                    //   ServiceTitle.clear();
+                    //    ServiceArea.clear();
+                    AsyncCallWS task = new AsyncCallWS();
+                    task.execute();
+                    swipeRefreshLayout.setRefreshing(true);
+
+
+                }else {
+                    App.CustomToast("خطا: ارتباط اینترنت را چک نمایید");
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+                //  scrollListener.resetState();
+                // scroll.rese
+                container.removeAllViewsInLayout();
+                ServiceTime.clear();
+                ServiceTitle.clear();
+                ServiceArea.clear();
+                ServiceStat.clear();
+                ServicePrice.clear();
+                ServiceOlaviat.clear();
+                ServiceCat.clear();
+                ServiceDesc.clear();
+
+
+
+            }
+        });
+
+
+
 
     }
     private class AsyncCallWS extends AsyncTask<Void, Void, Void> {
@@ -98,11 +166,40 @@ public class MyServices extends AppCompatActivity {
                 TextView areaName = (TextView) child.findViewById(R.id.txt_area);
                 TextView title = (TextView) child.findViewById(R.id.txt_title);
                 TextView state = (TextView) child.findViewById(R.id.txt_state);
-                LinearLayout item = (LinearLayout) child.findViewById(R.id.ll_item);
+                TextView txttime = (TextView) child.findViewById(R.id.txt_time);
+                CardView item = (CardView) child.findViewById(R.id.ll_row);
+
+                ratingbar1=(RatingBar)child.findViewById(R.id.ratingBar1);
+
+                SharedPreferences prefs = getSharedPreferences("INFO", MODE_PRIVATE);
+
+                final String rating  = prefs.getString("rating", "0");
+
+                ratingbar1.setRating(Integer.parseInt(rating));
+
 
                 areaName.setText("محدوده ی "+ServiceArea.get(i));
                 title.setText(ServiceTitle.get(i));
-                state.setText(ServiceState.get(i));
+                state.setText(ServiceStat.get(i));
+                if(ServiceStat.get(i).equals("ثبت شده")){
+                    state.setBackgroundColor(Color.parseColor("#8c8c8c"));
+                }
+                if(ServiceStat.get(i).equals("انتخاب شده")){
+                    state.setBackgroundColor(Color.parseColor("#ff9900"));
+                }
+                if(ServiceStat.get(i).equals("لغو / حذف شده")){
+                    state.setBackgroundColor(Color.parseColor("#cc0000"));
+                }
+                if(ServiceStat.get(i).equals("پذیرش شده")){
+                    state.setBackgroundColor(Color.parseColor("#0000cc"));
+                }
+                if(ServiceStat.get(i).equals("انجام شده")){
+                    state.setBackgroundColor(Color.parseColor("#006600"));
+                }
+                if(ServiceStat.get(i).equals("عدم ارائه سرویس")){
+                    state.setBackgroundColor(Color.parseColor("#6b6b47"));
+                }
+                txttime.setText(ServiceTime.get(i));
                 container.addView(child);
 
                 item.setOnClickListener(new View.OnClickListener() {
@@ -110,10 +207,14 @@ public class MyServices extends AppCompatActivity {
                     public void onClick(View view) {
 
                         stitle = ServiceTitle.get(index);
-                        phone = ServicePhone.get(index);
+                        area = ServiceArea.get(index);
+                        stat = ServiceStat.get(index);
                         desc = ServiceDesc.get(index);
-                        address = ServiceAddress.get(index);
-                        fullname = ServiceFName.get(index) + " " +ServiceLName.get(index);
+                        time = ServiceTime.get(index);
+                        cat = ServiceCat.get(index);
+                        olaviat = ServiceOlaviat.get(index);
+                        price = ServicePrice.get(index);
+
                         index = ((LinearLayout) child.getParent()).indexOfChild(child);
                         Intent intent = new Intent(MyServices.this, MyServicesDetailes.class);
                         startActivity(intent);
@@ -125,7 +226,7 @@ public class MyServices extends AppCompatActivity {
                 });
 
             }
-            pd.hide();
+           swipeRefreshLayout.setRefreshing(false);
 
 
 
@@ -183,17 +284,15 @@ public class MyServices extends AppCompatActivity {
                 //   smart = new Smartphone();
                 //  for (int j = 0; j < so.getPropertyCount(); j++) {
                 // smart.setProperty(j, so.getProperty(j));
-                ServiceTitle.add(so.getProperty(5).toString());
-                ServiceArea.add(so.getProperty(13).toString());
-                ServiceState.add(so.getProperty(30).toString());
-                ServiceFName.add(so.getProperty(15).toString());
-                ServiceLName.add(so.getProperty(14).toString());
-                ServicePhone.add(so.getProperty(17).toString());
-                ServiceAddress.add(so.getProperty(18).toString());
-                ServiceDesc.add(so.getProperty(19).toString());
+                ServiceTitle.add(so.getPropertyAsString("serviceTitle"));
+                ServiceArea.add(so.getPropertyAsString("areaTitle"));
+                ServiceCat.add(so.getPropertyAsString("catTitle") + " - " +so.getPropertyAsString("subCatTitle") );
+                ServiceTime.add(so.getPropertyAsString("insrtTimePersian"));
+                ServiceStat.add(so.getPropertyAsString("stateTitle"));
+                ServiceOlaviat.add(so.getPropertyAsString("priorityTitle"));
+                ServiceDesc.add(so.getPropertyAsString("desc"));
+                ServicePrice.add(so.getPropertyAsString("calculatedPrice"));
 
-
-                //  }
             }
 
         } catch (SoapFault soapFault) {
@@ -207,5 +306,21 @@ public class MyServices extends AppCompatActivity {
         }
 
     }
+
+    public Boolean isMobileDataEnabled(){
+        Object connectivityService = App.context.getSystemService(CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) connectivityService;
+
+        try {
+            Class<?> c = Class.forName(cm.getClass().getName());
+            Method m = c.getDeclaredMethod("getMobileDataEnabled");
+            m.setAccessible(true);
+            return (Boolean)m.invoke(cm);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 }

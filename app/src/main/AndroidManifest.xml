@@ -64,13 +64,23 @@
         </activity>
         <activity
             android:name=".activities.MyServicesDetailes"
-            android:label="@string/title_activity_insert_pay_info"
+            android:label="جزئیات سرویس"
             android:parentActivityName=".activities.MyServices"
             android:theme="@style/AppThemeNoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.alizare.server.activities.MyServices" />
         </activity>
+        <activity
+            android:name=".activities.RequestDetails"
+            android:label="جزئیات درخواست"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppThemeNoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.alizare.server.activities.MainActivity" />
+        </activity>
+
         <activity
             android:name=".activities.Filter"
             android:screenOrientation="portrait"

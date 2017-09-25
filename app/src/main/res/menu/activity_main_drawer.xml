@@ -4,20 +4,25 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_afzayesh_etebar"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@mipmap/price"
             android:title="افزایش اعتبار" />
         <item
             android:id="@+id/nav_ghavanin"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@mipmap/law"
             android:title="قوانین و مقررات" />
         <item
             android:id="@+id/nav_tamas"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@mipmap/callcenter"
             android:title="تماس با مرکز" />
         <item
             android:id="@+id/nav_my_service"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@mipmap/myservice"
             android:title="سرویس های من" />
+        <item
+            android:id="@+id/exit"
+            android:icon="@mipmap/exit"
+            android:title="خروج از حساب" />
+
     </group>
 
 </menu>

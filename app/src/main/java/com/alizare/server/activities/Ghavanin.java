@@ -1,13 +1,19 @@
 package com.alizare.server.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.alizare.server.App;
 import com.alizare.server.R;
 
 import org.ksoap2.SoapEnvelope;
@@ -18,6 +24,7 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 public class Ghavanin extends AppCompatActivity {
 
@@ -31,14 +38,32 @@ public class Ghavanin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ghavanin);
 
+        ImageButton back = (ImageButton)  findViewById(R.id.back_ib);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+
         txtRules = (TextView) findViewById(R.id.txtRules);
         pd = new ProgressDialog(Ghavanin.this);
         pd.setMessage("لطفا صبر کنید..");
-        pd.show();
 
+        ConnectivityManager connManager = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        Ghavanin.AsyncCallWS task = new Ghavanin.AsyncCallWS();
-        task.execute();
+        if (mWifi.isConnected() || isMobileDataEnabled()) {
+            pd.show();
+
+            Ghavanin.AsyncCallWS task = new Ghavanin.AsyncCallWS();
+            task.execute();
+        }else {
+            App.CustomToast("خطا: ارتباط اینترنت را چک نمایید");
+            pd.hide();
+        }
+
 
         txtRules.setText(fullText);
 
@@ -65,19 +90,6 @@ public class Ghavanin extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
 
-            //     App.CustomToast("وارد شدید");
-            //  Toast.makeText(LoginActivity.this, "وارد شدید" , Toast.LENGTH_LONG).show();
-            // LayoutInflater inflater = (LayoutInflater)getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-      /*      for(int i = 0; i< areaNames.size(); i++) {
-                View child = inflater.inflate(R.layout.layout_bank, null, false);
-                TextView areaName = (TextView) child.findViewById(R.id.bank_name);
-                TextView areaId = (TextView) child.findViewById(R.id.bank_code);
-
-                areaName.setText(areaNames.get(i));
-                areaId.setText(areaIds.get(i));
-                container.addView(child);
-            }
-*/
         }
 
     }
@@ -121,7 +133,6 @@ public class Ghavanin extends AppCompatActivity {
             SoapObject result = (SoapObject) envelope.getResponse();
 
             fullText =result.getPropertyAsString(3);
-            Log.i("chiiii3", fullText.toString());
             new Thread()
             {
                 public void run()
@@ -151,6 +162,20 @@ public class Ghavanin extends AppCompatActivity {
 
     }
 
+    public Boolean isMobileDataEnabled(){
+        Object connectivityService = App.context.getSystemService(CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) connectivityService;
+
+        try {
+            Class<?> c = Class.forName(cm.getClass().getName());
+            Method m = c.getDeclaredMethod("getMobileDataEnabled");
+            m.setAccessible(true);
+            return (Boolean)m.invoke(cm);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
 }

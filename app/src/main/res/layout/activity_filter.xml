@@ -3,41 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_filter"
-    tools:context="com.alizare.server.activities.Filter"
-    android:background="#e6e6e6"
     android:layout_width="300dp"
+    android:layout_height="350dp"
+    android:background="#e6e6e6"
     android:orientation="vertical"
-    android:layout_height="500dp"
-    android:weightSum="12">
+    tools:context="com.alizare.server.activities.Filter">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <TextView
-            android:text="اعمال فیلتر"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView3"
-            android:layout_margin="8dp"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            app:srcCompat="@drawable/side_nav_bar"
-            android:id="@+id/imageView3"
-            android:layout_height="1dp"
-            android:background="#808080" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="10">
+        android:layout_weight="1"
+        android:background="?attr/colorButtonNormal"
+        android:orientation="vertical">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -46,31 +23,138 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <Spinner
+                            android:id="@+id/spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="محدوده ها"
+                            android:textColor="#fff" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <Spinner
+                            android:id="@+id/spinnerCat"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="گروه ها"
+                            android:textColor="#fff" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal"
+                        android:padding="5dp"
+                        android:visibility="gone">
+
+                        <Spinner
+                            android:id="@+id/spinnerSubCat"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="نوع سرویس"
+                            android:textColor="#fff" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <Spinner
+                            android:id="@+id/spinnerOlaviat"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="اولویت سرویس"
+                            android:textColor="#fff" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
         </ScrollView>
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <ImageView
-            android:layout_width="match_parent"
-            app:srcCompat="@drawable/side_nav_bar"
             android:id="@+id/imageView4"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#808080" />
+            android:background="#808080"
+            app:srcCompat="@drawable/side_nav_bar" />
 
         <Button
-            android:text="اعمال"
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_filter2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button2"
+            android:layout_gravity="center_vertical"
             android:background="#e6e6e6"
-            android:textColor="@color/colorPrimary"
-            android:layout_gravity="center_vertical" />
+            android:text="اعمال"
+            android:textColor="@color/colorPrimary" />
     </LinearLayout>
 
 </LinearLayout>

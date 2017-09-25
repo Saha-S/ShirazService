@@ -1,19 +1,27 @@
 package com.alizare.server.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.alizare.server.App;
 import com.alizare.server.R;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
@@ -23,6 +31,8 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -31,6 +41,13 @@ public class LoginActivity extends AppCompatActivity {
     Button btnlogin;
 
     ProgressBar pblogin;
+    private SliderLayout mDemoSlider;
+    private CheckBox saveLoginCheckBox;
+    private SharedPreferences loginPreferences;
+    private SharedPreferences.Editor loginPrefsEditor;
+    private boolean saveLogin;
+    private String username , password;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +58,64 @@ public class LoginActivity extends AppCompatActivity {
         etpassword = (EditText) findViewById(R.id.password_et);
         btnlogin = (Button) findViewById(R.id.login_btn);
         pblogin = (ProgressBar) findViewById(R.id.login_progress);
+        mDemoSlider = (SliderLayout)findViewById(R.id.slider);
+
+        saveLoginCheckBox = (CheckBox)findViewById(R.id.saveLoginCheckBox);
+        loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        loginPrefsEditor = loginPreferences.edit();
+
+        saveLogin = loginPreferences.getBoolean("saveLogin", false);
+        if (saveLogin == true) {
+            etusername.setText(loginPreferences.getString("username", ""));
+            etpassword.setText(loginPreferences.getString("password", ""));
+            saveLoginCheckBox.setChecked(true);
+        }
+
+
+        HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
+        file_maps.put("1",R.drawable.s1);
+        file_maps.put("2",R.drawable.s2);
+        file_maps.put("3",R.drawable.s3);
+        file_maps.put("4", R.drawable.s4);
+        for(String name : file_maps.keySet()){
+            DefaultSliderView textSliderView = new DefaultSliderView(this);
+            // initialize a SliderLayout
+            textSliderView
+                    .description(name)
+                    .image(file_maps.get(name))
+                    .setScaleType(BaseSliderView.ScaleType.Fit);
+
+            //add your extra information
+            textSliderView.bundle(new Bundle());
+            textSliderView.getBundle()
+                    .putString("extra",name);
+
+            mDemoSlider.addSlider(textSliderView);
+        }
+
+
+
+
 
 
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                AsyncCallWS task = new AsyncCallWS();
-                task.execute();
+                ConnectivityManager connManager = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+                if (mWifi.isConnected() || isMobileDataEnabled()) {
+                    AsyncCallWS task = new AsyncCallWS();
+                    task.execute();
+
+                }else {
+                    App.CustomToast("خطا: ارتباط اینترنت را چک نمایید");
+                    pblogin.setVisibility(View.INVISIBLE);
+                    btnlogin.setEnabled(true);
+                }
+
+
 
 
             }
@@ -64,6 +131,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             pblogin.setVisibility(View.VISIBLE);
+            btnlogin.setEnabled(false);
         }
 
         @Override
@@ -75,19 +143,6 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
 
-            //     App.CustomToast("وارد شدید");
-            //  Toast.makeText(LoginActivity.this, "وارد شدید" , Toast.LENGTH_LONG).show();
-            // LayoutInflater inflater = (LayoutInflater)getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-      /*      for(int i = 0; i< areaNames.size(); i++) {
-                View child = inflater.inflate(R.layout.layout_bank, null, false);
-                TextView areaName = (TextView) child.findViewById(R.id.bank_name);
-                TextView areaId = (TextView) child.findViewById(R.id.bank_code);
-
-                areaName.setText(areaNames.get(i));
-                areaId.setText(areaIds.get(i));
-                container.addView(child);
-            }
-*/
 
         }
 
@@ -133,32 +188,45 @@ public class LoginActivity extends AppCompatActivity {
 
             SoapObject result = (SoapObject) envelope.getResponse();
 
-            Log.i("khkhkhkhkhk", result.getPropertyAsString(0));
 
             if (result.getPropertyAsString(0).equals("0")) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(etusername.getWindowToken(), 0);
 
-                String fname = result.getPropertyAsString(2);
-                String fullname = fname + " " + result.getPropertyAsString(3);
-                Log.i("chiiii3", fullname.toString());
+                username = etusername.getText().toString();
+                password = etpassword.getText().toString();
+
+                if (saveLoginCheckBox.isChecked()) {
+                    loginPrefsEditor.putBoolean("saveLogin", true);
+                    loginPrefsEditor.putString("username", username);
+                    loginPrefsEditor.putString("password", password);
+                    loginPrefsEditor.commit();
+                } else {
+                    loginPrefsEditor.clear();
+                    loginPrefsEditor.commit();
+                }
+
+
+                String fullname = result.getPropertyAsString("firstName") + " " + result.getPropertyAsString("lastName");
 
 
                 SharedPreferences.Editor editor = getSharedPreferences("INFO", MODE_PRIVATE).edit();
                 editor.putString("fullname", fullname.toString());
-                editor.putString("servicemanId", result.getPropertyAsString(4));
-                editor.putString("picAddress", result.getPropertyAsString(5));
-                editor.putString("personTypeIdx", result.getPropertyAsString(6));
-                editor.putString("personType", result.getPropertyAsString(7));
-                editor.putString("titleId", result.getPropertyAsString(8));
-                editor.putString("title", result.getPropertyAsString(9));
-                editor.putString("provinceId", result.getPropertyAsString(10));
-                editor.putString("province", result.getPropertyAsString(11));
-                editor.putString("cityId", result.getPropertyAsString(12));
+                editor.putString("servicemanId", result.getPropertyAsString("servicemanId"));
+                editor.putString("picAddress", result.getPropertyAsString("picAddress"));
+               // editor.putString("personTypeIdx", result.getPropertyAsString(6));
+                //editor.putString("personType", result.getPropertyAsString(7));
+               // editor.putString("titleId", result.getPropertyAsString(8));
+             //   editor.putString("title", result.getPropertyAsString(9));
+             //   editor.putString("provinceId", result.getPropertyAsString(10));
+             //   editor.putString("province", result.getPropertyAsString(11));
+           //     editor.putString("cityId", result.getPropertyAsString(12));
 //                editor.putString("city", result.getPropertyAsString(13));
-                editor.putString("areaId", result.getPropertyAsString(14));
-                editor.putString("area", result.getPropertyAsString(15));
-                editor.putString("address", result.getPropertyAsString(16));
-                editor.putString("totalPoint", result.getPropertyAsString(17));
-                editor.putString("rating", result.getPropertyAsString(18));
+         //       editor.putString("areaId", result.getPropertyAsString(14));
+           //     editor.putString("area", result.getPropertyAsString(15));
+         //       editor.putString("time", result.getPropertyAsString(16));
+          //      editor.putString("totalPoint", result.getPropertyAsString(17));
+                editor.putString("rating", result.getPropertyAsString("rating"));
                 editor.putString("credit", result.getPropertyAsString(19));
                 editor.putString("tempCredit", result.getPropertyAsString(20));
 //            editor.putString("discountPercent", result.getPropertyAsString(21));
@@ -171,6 +239,8 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 //finish();
                                 pblogin.setVisibility(View.INVISIBLE);
+                                btnlogin.setEnabled(true);
+
                                 {
                                     App.CustomToast("خوش آمدید");
                                 }
@@ -189,6 +259,8 @@ public class LoginActivity extends AppCompatActivity {
                                 public void run() {
                                     App.CustomToast(" ﻧﺎم ﮐﺎرﺑﺮی / رﻣﺰ ﻋﺒﻮر وارد ﺷﺪه ﻧﺎﻣﻌﺘﺒﺮ اﺳت ");
                                     pblogin.setVisibility(View.INVISIBLE);
+                                    btnlogin.setEnabled(true);
+
                                 }
                             });
                         }
@@ -204,6 +276,8 @@ public class LoginActivity extends AppCompatActivity {
                                 public void run() {
                                     App.CustomToast(" سرویس دهنده غیر فعال شده است");
                                     pblogin.setVisibility(View.INVISIBLE);
+                                    btnlogin.setEnabled(true);
+
                                 }
                             });
                         }
@@ -218,6 +292,8 @@ public class LoginActivity extends AppCompatActivity {
                                 public void run() {
                                     App.CustomToast(" کلید تبادل درج شده اشتباه است");
                                     pblogin.setVisibility(View.INVISIBLE);
+                                    btnlogin.setEnabled(true);
+
                                 }
                             });
                         }
@@ -232,6 +308,8 @@ public class LoginActivity extends AppCompatActivity {
                                 public void run() {
                                     App.CustomToast(" شماره موبایل وارد شده اشتباه است.");
                                     pblogin.setVisibility(View.INVISIBLE);
+                                    btnlogin.setEnabled(true);
+
                                 }
                             });
                         }
@@ -246,6 +324,8 @@ public class LoginActivity extends AppCompatActivity {
                                 public void run() {
                                     App.CustomToast(" خطایی پیش آمده است .");
                                     pblogin.setVisibility(View.INVISIBLE);
+                                    btnlogin.setEnabled(true);
+
                                 }
                             });
                         }
@@ -268,6 +348,22 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+
+    public Boolean isMobileDataEnabled(){
+        Object connectivityService = App.context.getSystemService(CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) connectivityService;
+
+        try {
+            Class<?> c = Class.forName(cm.getClass().getName());
+            Method m = c.getDeclaredMethod("getMobileDataEnabled");
+            m.setAccessible(true);
+            return (Boolean)m.invoke(cm);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
 
 
