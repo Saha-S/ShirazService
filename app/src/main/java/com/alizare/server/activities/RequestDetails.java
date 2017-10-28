@@ -32,6 +32,9 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class RequestDetails extends AppCompatActivity {
 
@@ -175,7 +178,14 @@ public class RequestDetails extends AppCompatActivity {
                             time.setText(Html.fromHtml("<b>تاریخ درخواست : </b>"+result.getPropertyAsString("insrtTimePersian")));
                             state.setText(Html.fromHtml("<b>وضعیت درخواست :</b> "+result.getPropertyAsString("stateTitle")));
                             olaviat.setText(Html.fromHtml("<b>اولویت درخواست : </b>"+result.getPropertyAsString("priorityTitle")));
-                            price.setText(Html.fromHtml("<b>هزینه محاسبه شده :</b> "+result.getPropertyAsString("calculatedPrice")));
+                            String s = result.getPropertyAsString("calculatedPrice");
+                                    Locale farsi = new Locale("fa", "IR");
+                            NumberFormat numberFormatDutch = NumberFormat.getCurrencyInstance(farsi);
+
+                            String c = numberFormatDutch.format(new BigDecimal(s.toString()));
+                            String cc = c.replace("ریال", " " + "\u200e");
+
+                            price.setText(Html.fromHtml("<b>هزینه محاسبه شده :</b> "+ cc + "ریال"));
 
                             mobile.setOnClickListener(new View.OnClickListener() {
                                 @Override

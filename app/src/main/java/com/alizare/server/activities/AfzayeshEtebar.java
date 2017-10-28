@@ -16,6 +16,10 @@ import android.widget.ToggleButton;
 
 import com.alizare.server.R;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class AfzayeshEtebar extends AppCompatActivity {
 
     TextView txtEtebar , txtMeghdarEtebar , txtEtebarnaahaii;
@@ -57,10 +61,23 @@ public class AfzayeshEtebar extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("INFO", MODE_PRIVATE);
         etebarfelii= Integer.parseInt(prefs.getString("credit", "0"));
-        txtEtebar.setText("اعتبار فعلی "+etebarfelii+" ریال");
+        Locale farsi = new Locale("fa", "IR");
+        NumberFormat numberFormatDutch = NumberFormat.getCurrencyInstance(farsi);
 
-        txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-        txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
+        String c = numberFormatDutch.format(new BigDecimal(etebarfelii));
+        String cc = c.replace("ریال", "" + "\u200e");
+
+        txtEtebar.setText("اعتبار فعلی "+cc+" ریال");
+
+        String d = numberFormatDutch.format(new BigDecimal(sum));
+        String dd = d.replace("ریال", "" + "\u200e");
+
+
+        txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + dd + " ریال");
+        String e = numberFormatDutch.format(new BigDecimal(sum+etebarfelii));
+        String ee = e.replace("ریال", "" + "\u200e");
+
+        txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (ee) + " ریال");
 
 
         btnPay.setOnClickListener(new View.OnClickListener() {

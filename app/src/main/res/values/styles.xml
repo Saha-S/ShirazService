@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#392323</item>
+        <item name="colorPrimary">#373737</item>
         <item name="colorPrimaryDark">#291818</item>
         <item name="colorAccent">#e7393a</item>
         <item name="android:typeface">serif</item>
@@ -11,7 +11,7 @@
 
     <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#392323</item>
+        <item name="colorPrimary">#373737</item>
         <item name="colorPrimaryDark">#291818</item>
         <item name="colorAccent">#e7393a</item>
         <item name="android:typeface">serif</item>
@@ -35,5 +35,14 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">#fec100</item>
+
+    </style>
+
 
 </resources>

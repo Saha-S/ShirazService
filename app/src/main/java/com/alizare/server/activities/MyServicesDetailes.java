@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import com.alizare.server.R;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class MyServicesDetailes extends AppCompatActivity {
 
 
@@ -48,7 +52,15 @@ public class MyServicesDetailes extends AppCompatActivity {
         time.setText(Html.fromHtml("<b>تاریخ درخواست : </b>"+MyServices.time));
         state.setText(Html.fromHtml("<b>وضعیت درخواست :</b> "+MyServices.stat));
         olaviat.setText(Html.fromHtml("<b>اولویت درخواست : </b>"+MyServices.olaviat));
-        price.setText(Html.fromHtml("<b>هزینه محاسبه شده :</b> "+MyServices.price));
+        String s = MyServices.price;
+        Locale farsi = new Locale("fa", "IR");
+        NumberFormat numberFormatDutch = NumberFormat.getCurrencyInstance(farsi);
+
+        String c = numberFormatDutch.format(new BigDecimal(s.toString()));
+        String cc = c.replace("ریال", " تومان " + "\u200e");
+
+        price.setText(Html.fromHtml("<b>هزینه محاسبه شده :</b> "+ cc));
+
 
 
 

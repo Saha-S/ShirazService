@@ -3,6 +3,7 @@ package com.alizare.server.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.alizare.server.App;
 import com.alizare.server.R;
@@ -64,6 +66,12 @@ public class LoginActivity extends AppCompatActivity {
         loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
         loginPrefsEditor = loginPreferences.edit();
 
+        TextView tvtitle=(TextView) findViewById(R.id.tv_mainpage_title);
+        Typeface face = Typeface.createFromAsset(getAssets(),
+                "mjdalalst.ttf");
+        tvtitle.setTypeface(face);
+
+
         saveLogin = loginPreferences.getBoolean("saveLogin", false);
         if (saveLogin == true) {
             etusername.setText(loginPreferences.getString("username", ""));
@@ -77,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         file_maps.put("2",R.drawable.s2);
         file_maps.put("3",R.drawable.s3);
         file_maps.put("4", R.drawable.s4);
+        file_maps.put("5", R.drawable.s5);
         for(String name : file_maps.keySet()){
             DefaultSliderView textSliderView = new DefaultSliderView(this);
             // initialize a SliderLayout
@@ -102,19 +111,27 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                ConnectivityManager connManager = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-                if (mWifi.isConnected() || isMobileDataEnabled()) {
-                    AsyncCallWS task = new AsyncCallWS();
-                    task.execute();
-
-                }else {
-                    App.CustomToast("خطا: ارتباط اینترنت را چک نمایید");
-                    pblogin.setVisibility(View.INVISIBLE);
-                    btnlogin.setEnabled(true);
+                if(etusername.getText().length() == 0){
+                    etusername.setError("لطفا نام کاربری خود را وارد کنید");
+                }
+                if(etpassword.getText().length() == 0){
+                    etpassword.setError("لطفا رمز عبور خود را وارد کنید");
                 }
 
+                if(etpassword.getText().length() != 0 && etusername.getText().length() != 0){
+                    ConnectivityManager connManager = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+                    if (mWifi.isConnected() || isMobileDataEnabled()) {
+                        AsyncCallWS task = new AsyncCallWS();
+                        task.execute();
+
+                    } else {
+                        App.CustomToast("خطا: ارتباط اینترنت را چک نمایید");
+                        pblogin.setVisibility(View.INVISIBLE);
+                        btnlogin.setEnabled(true);
+                    }
+                }
 
 
 
@@ -227,8 +244,8 @@ public class LoginActivity extends AppCompatActivity {
          //       editor.putString("time", result.getPropertyAsString(16));
           //      editor.putString("totalPoint", result.getPropertyAsString(17));
                 editor.putString("rating", result.getPropertyAsString("rating"));
-                editor.putString("credit", result.getPropertyAsString(19));
-                editor.putString("tempCredit", result.getPropertyAsString(20));
+                editor.putString("credit", result.getPropertyAsString("credit"));
+                editor.putString("tempCredit", result.getPropertyAsString("tempCredit"));
 //            editor.putString("discountPercent", result.getPropertyAsString(21));
                 editor.commit();
                 new Thread() {

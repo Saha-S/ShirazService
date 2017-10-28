@@ -6,7 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="right">
+    tools:openDrawer="right"
+    android:layoutDirection="rtl"
+    android:supportsRtl="true"
+
+    >
 
     <include
         layout="@layout/app_bar_main"
@@ -22,6 +26,7 @@
         app:menu="@menu/activity_main_drawer"
         android:layout_gravity="right"
         android:layoutDirection="rtl"
+        android:textDirection="rtl"
         />
 
 </android.support.v4.widget.DrawerLayout>

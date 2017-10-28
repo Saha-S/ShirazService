@@ -29,12 +29,16 @@ tools:context="com.alizare.server.activities.LoginActivity">
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/tv_mainpage_title"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="20dp"
                 android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="ورود کاربر"
+                android:gravity="center"
+                android:shadowColor="#180117"
+                android:shadowDx="-3"
+                android:shadowDy="3"
+                android:shadowRadius="3"
+                android:text="شیراز سرویس"
                 android:textColor="#ffffff"
                 android:textSize="22sp" />
 

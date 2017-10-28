@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -178,26 +177,29 @@ public class MyServices extends AppCompatActivity {
                 ratingbar1.setRating(Integer.parseInt(rating));
 
 
-                areaName.setText("محدوده ی "+ServiceArea.get(i));
+                areaName.setText(ServiceArea.get(i));
                 title.setText(ServiceTitle.get(i));
                 state.setText(ServiceStat.get(i));
                 if(ServiceStat.get(i).equals("ثبت شده")){
-                    state.setBackgroundColor(Color.parseColor("#8c8c8c"));
+                 //   state.setBackgroundColor(Color.parseColor("#8c8c8c"));
                 }
                 if(ServiceStat.get(i).equals("انتخاب شده")){
-                    state.setBackgroundColor(Color.parseColor("#ff9900"));
+                 //   state.setBackgroundColor(Color.parseColor("#ff9900"));
+                    state.setBackgroundDrawable(getResources().getDrawable(R.drawable.frame_green) );
+
                 }
                 if(ServiceStat.get(i).equals("لغو / حذف شده")){
-                    state.setBackgroundColor(Color.parseColor("#cc0000"));
+                  //  state.setBackgroundColor(Color.parseColor("#cc0000"));
                 }
                 if(ServiceStat.get(i).equals("پذیرش شده")){
-                    state.setBackgroundColor(Color.parseColor("#0000cc"));
+                  //  state.setBackgroundColor(Color.parseColor("#0000cc"));
                 }
                 if(ServiceStat.get(i).equals("انجام شده")){
-                    state.setBackgroundColor(Color.parseColor("#006600"));
+                   // state.setBackgroundColor(Color.parseColor("#006600"));
+                    state.setBackgroundDrawable(getResources().getDrawable(R.drawable.frame_green) );
                 }
                 if(ServiceStat.get(i).equals("عدم ارائه سرویس")){
-                    state.setBackgroundColor(Color.parseColor("#6b6b47"));
+                   // state.setBackgroundColor(Color.parseColor("#6b6b47"));
                 }
                 txttime.setText(ServiceTime.get(i));
                 container.addView(child);

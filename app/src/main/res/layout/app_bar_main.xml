@@ -21,26 +21,20 @@
              android:layout_height="60dp"
              android:gravity="right|center_vertical">
 
-             <LinearLayout
+
+             <ImageButton
+                 android:id="@+id/imageButton"
                  android:layout_width="wrap_content"
-                 android:layout_height="match_parent"
-                 android:orientation="horizontal"
-                 android:gravity="center_vertical"
-                 android:id="@+id/ll_new_agahi"
-                 >
-
-
-</LinearLayout>
-             <TextView android:layout_width="0dp"
                  android:layout_height="wrap_content"
-                 android:layout_weight="1"/>
-
+                 android:layout_marginRight="10dp"
+                 android:background="@drawable/icon" />
 
              <TextView
                  android:id="@+id/tv_mainpage_title"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_marginRight="10dp"
+                 android:layout_marginRight="5dp"
+                 android:layout_weight="1"
                  android:shadowColor="#180117"
                  android:shadowDx="-3"
                  android:shadowDy="3"
@@ -53,9 +47,8 @@
                  android:id="@+id/ib_menu"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:background="@mipmap/ic_menu"
-                 android:layout_marginRight="5dp"
-                 />
+                 android:layout_marginRight="2dp"
+                 android:background="@mipmap/ic_menu3" />
 
 
 

@@ -1,15 +1,18 @@
 package com.alizare.server.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,8 +33,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -48,8 +51,13 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Vector;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -73,11 +81,19 @@ public class MainActivity extends AppCompatActivity
     public static String requestId;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ScrollView scroll;
+    private RatingBar ratingbar1;
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1) //call this before super.onCreate
+    private void forceRtlIfSupported() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -104,11 +120,15 @@ public class MainActivity extends AppCompatActivity
 
         ServiceTitle = new ArrayList<String>();
         container = (LinearLayout)findViewById(R.id.container);
-        btnFilter = (Button)findViewById(R.id.btn_filter);
+        LinearLayout filter = (LinearLayout)findViewById(R.id.ll_filter);
         ibmenu=(ImageButton) findViewById(R.id.ib_menu);
         tvtitle=(TextView) findViewById(R.id.tv_mainpage_title);
 //        Typeface tfmorvarid= Typeface.createFromAsset(App.context.getAssets(), "morvarid.ttf");
      //   tvtitle.setTypeface(tfmorvarid);
+        Typeface face = Typeface.createFromAsset(getAssets(),
+                "mjdalalst.ttf");
+        tvtitle.setTypeface(face);
+
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe);
         scroll = (ScrollView) findViewById(R.id.scroll);
@@ -127,6 +147,7 @@ public class MainActivity extends AppCompatActivity
         ServicePrice = new ArrayList<String>();
         container = (LinearLayout)findViewById(R.id.container);
 
+
         ConnectivityManager connManager = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
@@ -141,7 +162,7 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-        btnFilter.setOnClickListener(new View.OnClickListener() {
+        filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this , Filter.class);
@@ -208,17 +229,31 @@ public class MainActivity extends AppCompatActivity
         final TextView txtName = (TextView)hView.findViewById(R.id.txt_name);
         final TextView txtEtebar = (TextView)hView.findViewById(R.id.txt_etebar);
         final TextView txtTakhfif = (TextView)hView.findViewById(R.id.txt_takhfif);
-        final ImageView img = (ImageView) hView.findViewById(R.id.imageView);
+        final CircleImageView img = (CircleImageView) hView.findViewById(R.id.imageView);
 
         // final Button btnExit = (Button)hView.findViewById(R.id.nav_gallery);
 
+        ratingbar1=(RatingBar)hView.findViewById(R.id.ratingBar1);
 
         SharedPreferences prefs = getSharedPreferences("INFO", MODE_PRIVATE);
+
+        final String rating  = prefs.getString("rating", "0");
+
+        ratingbar1.setRating(Float.parseFloat(rating));
+
+
 
         final String fullname = prefs.getString("fullname", "0");
 
         txtName.setText(fullname);
-        txtEtebar.setText("اعتبار فعلی "+prefs.getString("credit", "0")+" ریال");
+
+        Locale farsi = new Locale("fa", "IR");
+        NumberFormat numberFormatDutch = NumberFormat.getCurrencyInstance(farsi);
+
+        String c = numberFormatDutch.format(new BigDecimal(prefs.getString("credit", "0")));
+        String cc = c.replace("ریال", "" + "\u200e");
+
+        txtEtebar.setText("اعتبار فعلی "+cc+" ریال");
         txtTakhfif.setText("درصد تخفیف "+prefs.getString("discountPercent", "0")+ " درصد");
         Picasso.with(App.context).load(prefs.getString("picAddress", "0")).into(img);
 
@@ -328,6 +363,7 @@ public class MainActivity extends AppCompatActivity
             SoapObject Request = new SoapObject(NAMESPACE, METHOD_NAME);
             Request.addProperty("tokenId", "2085");
             Request.addProperty("tokenKey", "W/*@!&R~k^Ma$#._=N");
+
             Request.addProperty("servicemanId", prefs.getString("servicemanId", "0"));
             Request.addProperty("serviceTitle", "");
             Request.addProperty("serviceId", "");
@@ -335,8 +371,9 @@ public class MainActivity extends AppCompatActivity
             Request.addProperty("serviceSubCatId", Filter.subId);
             Request.addProperty("areaId", Filter.areaId);
             Request.addProperty("priorityId", Filter.olaviatId);
-            Request.addProperty("timeFrom", "");
-            Request.addProperty("timeTo", "");
+            Request.addProperty("dateFrom", "");
+            Request.addProperty("dateTo", "");
+            Request.addProperty("time", "");
             Request.addProperty("desc", "");
 
 
@@ -358,6 +395,7 @@ public class MainActivity extends AppCompatActivity
 
             int length = result.size();
             SoapObject soo = result.get(0);
+
 
             if(soo.getPropertyAsString("res").toString().equals("0")) {
 
