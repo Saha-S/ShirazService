@@ -66,19 +66,21 @@ public class MainActivity extends AppCompatActivity
     private Button btnSelect , btnFilter;
     private ImageButton ibmenu;
     private TextView tvtitle;
-    private static ArrayList<String> ServiceArea;
-    private static ArrayList<String> ServiceState;
-    private static ArrayList<String> ServiceTitle;
-    private ArrayList<String> ServiceFName;
-    private ArrayList<String> ServiceLName;
-    private ArrayList<String> ServicePhone;
+    private ArrayList<String> ServiceArea;
+    private ArrayList<String> ServicePrice;
+    private ArrayList<String> ServiceTitle;
+    private ArrayList<String> ServiceCat;
+    private ArrayList<String> ServiceTime;
+    private ArrayList<String> ServiceStat;
+    private ArrayList<String> ServiceOlaviat;
+    private ArrayList<String> ServiceDesc;
+    private ArrayList<String> PicAddress;
+
     private ArrayList<String> RequestId;
-    private static ArrayList<String> ServiceTime;
-    private static ArrayList<String> ServiceDesc;
-    private static ArrayList<String> ServicePrice;
+    public static String requestId;
+    public static String stitle , cat, area, time, desc , stat , olaviat, price;
     public  static  MainActivity.AsyncCallWS task;
     private ProgressDialog pd;
-    public static String requestId;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ScrollView scroll;
     private RatingBar ratingbar1;
@@ -131,20 +133,22 @@ public class MainActivity extends AppCompatActivity
 
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe);
-        scroll = (ScrollView) findViewById(R.id.scroll);
+       // scroll = (ScrollView) findViewById(R.id.scroll);
 
 
         ServiceTitle = new ArrayList<String>();
-        ServiceState = new ArrayList<String>();
+        ServicePrice = new ArrayList<String>();
         ServiceArea = new ArrayList<String>();
+
+        ServiceCat = new ArrayList<String>();
+        ServiceTime = new ArrayList<String>();
+        ServiceStat = new ArrayList<String>();
+        ServiceOlaviat = new ArrayList<String>();
+        ServiceDesc = new ArrayList<String>();
+        PicAddress = new ArrayList<String>();
+
         RequestId = new ArrayList<String>();
 
-        ServiceFName = new ArrayList<String>();
-        ServiceLName = new ArrayList<String>();
-        ServicePhone = new ArrayList<String>();
-        ServiceTime = new ArrayList<String>();
-        ServiceDesc = new ArrayList<String>();
-        ServicePrice = new ArrayList<String>();
         container = (LinearLayout)findViewById(R.id.container);
 
 
@@ -284,13 +288,13 @@ public class MainActivity extends AppCompatActivity
                 TextView Time = (TextView) child.findViewById(R.id.txt_insert_time);
                 CardView item = (CardView) child.findViewById(R.id.ll_row);
                 Button select = (Button)child.findViewById(R.id.btn_select);
+                CircleImageView img = (CircleImageView) child.findViewById(R.id.imageViewR);
 
 
 
                 areaName.setText("محدوده ی "+ServiceArea.get(i));
-
+                Picasso.with(App.context).load(PicAddress.get(i)).into(img);
                 Title.setText(ServiceTitle.get(i));
-
                 Time.setText(ServiceTime.get(i));
                 container.addView(child);
 
@@ -301,6 +305,15 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(View view) {
 
                         requestId = RequestId.get(index);
+                        stitle = ServiceTitle.get(index);
+                        area = ServiceArea.get(index);
+                        stat = ServiceStat.get(index);
+                        desc = ServiceDesc.get(index);
+                        time = ServiceTime.get(index);
+                        cat = ServiceCat.get(index);
+                        olaviat = ServiceOlaviat.get(index);
+                        price = ServicePrice.get(index);
+
                         index = ((LinearLayout) child.getParent()).indexOfChild(child);
                         Intent intent = new Intent(MainActivity.this, RequestDetails.class);
                         startActivity(intent);
@@ -399,16 +412,21 @@ public class MainActivity extends AppCompatActivity
 
             if(soo.getPropertyAsString("res").toString().equals("0")) {
 
-                for (int i = 0; i < 1; ++i) {
+                for (int i = 0; i < length; ++i) {
                     SoapObject so = result.get(i);
-                    ServiceTitle.add(so.getPropertyAsString("serviceTitle").toString());
-                    ServiceArea.add(so.getPropertyAsString("areaTitle").toString());
-                    ServiceState.add(so.getPropertyAsString("stateTitle").toString());
-                    ServiceTime.add(so.getPropertyAsString("insrtTimePersian").toString());
-                    ServiceDesc.add(so.getPropertyAsString("desc").toString());
-                    ServicePrice.add(so.getPropertyAsString("calculatedPrice").toString());
+                    //   smart = new Smartphone();
+                    //  for (int j = 0; j < so.getPropertyCount(); j++) {
+                    // smart.setProperty(j, so.getProperty(j));
+                    ServiceTitle.add(so.getPropertyAsString("serviceTitle"));
+                    ServiceArea.add(so.getPropertyAsString("areaTitle"));
+                    ServiceCat.add(so.getPropertyAsString("catTitle") + " - " +so.getPropertyAsString("subCatTitle") );
+                    ServiceTime.add(so.getPropertyAsString("insrtTimePersian"));
+                    ServiceStat.add(so.getPropertyAsString("stateTitle"));
+                    ServiceOlaviat.add(so.getPropertyAsString("priorityTitle"));
+                    ServiceDesc.add(so.getPropertyAsString("desc"));
+                    ServicePrice.add(so.getPropertyAsString("calculatedPrice"));
+                    PicAddress.add(so.getPropertyAsString("servicePicAddress"));
                     RequestId.add(so.getPropertyAsString("requestId").toString());
-
 
                 }
 

@@ -51,12 +51,20 @@
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
-
-    <FrameLayout
-        android:id="@+id/content"
+    <Button
+        android:id="@+id/button"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="8dp"
+        android:background="@drawable/line" />
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        android:fillViewport="true"
+        >
 
 
 
@@ -185,9 +193,9 @@
                         android:gravity="right"
                         android:hint="مبلغ دلخواه"
                         android:inputType="number"
-                        android:maxLines="1"
                         android:singleLine="true"
-                        android:textSize="20sp" />
+                        android:textSize="16sp"
+                        android:maxLength="10"/>
                 </android.support.design.widget.TextInputLayout>
 
                     <TextView
@@ -232,6 +240,5 @@
                     android:text="آنلاین" />
             </LinearLayout>
         </LinearLayout>
-    </FrameLayout>
-
+    </ScrollView>
 </LinearLayout>

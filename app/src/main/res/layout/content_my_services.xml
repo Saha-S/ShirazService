@@ -8,6 +8,12 @@
     tools:context="com.alizare.server.activities.MyServices"
     tools:showIn="@layout/activity_my_services">
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/line" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
         android:layout_width="match_parent"

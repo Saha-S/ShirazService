@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.alizare.server.App;
 import com.alizare.server.R;
+import com.squareup.picasso.Picasso;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.SoapFault;
@@ -37,6 +38,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MyServices extends AppCompatActivity {
 
     private ArrayList<String> ServiceArea;
@@ -47,6 +50,12 @@ public class MyServices extends AppCompatActivity {
     private ArrayList<String> ServiceStat;
     private ArrayList<String> ServiceOlaviat;
     private ArrayList<String> ServiceDesc;
+    private ArrayList<String> PicAddress;
+
+    private ArrayList<String> RequestId;
+    public static String requestId;
+
+
     private LinearLayout container;
     public static String stitle , cat, area, time, desc , stat , olaviat, price;
     private ProgressDialog pd;
@@ -79,8 +88,12 @@ public class MyServices extends AppCompatActivity {
         ServiceStat = new ArrayList<String>();
         ServiceOlaviat = new ArrayList<String>();
         ServiceDesc = new ArrayList<String>();
+        PicAddress = new ArrayList<String>();
 
-        container = (LinearLayout)findViewById(R.id.ll_mysrvices);
+        RequestId = new ArrayList<String>();
+
+
+        container = (LinearLayout) findViewById(R.id.ll_mysrvices);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe);
 
 
@@ -130,6 +143,8 @@ public class MyServices extends AppCompatActivity {
                 ServiceOlaviat.clear();
                 ServiceCat.clear();
                 ServiceDesc.clear();
+                PicAddress.clear();
+                RequestId.clear();
 
 
 
@@ -167,6 +182,12 @@ public class MyServices extends AppCompatActivity {
                 TextView state = (TextView) child.findViewById(R.id.txt_state);
                 TextView txttime = (TextView) child.findViewById(R.id.txt_time);
                 CardView item = (CardView) child.findViewById(R.id.ll_row);
+                CircleImageView img = (CircleImageView) child.findViewById(R.id.imageViewR);
+
+
+
+                areaName.setText("محدوده ی "+ServiceArea.get(i));
+                Picasso.with(App.context).load(PicAddress.get(i)).into(img);
 
                 ratingbar1=(RatingBar)child.findViewById(R.id.ratingBar1);
 
@@ -174,7 +195,7 @@ public class MyServices extends AppCompatActivity {
 
                 final String rating  = prefs.getString("rating", "0");
 
-                ratingbar1.setRating(Integer.parseInt(rating));
+                ratingbar1.setRating(Float.parseFloat(rating));
 
 
                 areaName.setText(ServiceArea.get(i));
@@ -202,7 +223,10 @@ public class MyServices extends AppCompatActivity {
                    // state.setBackgroundColor(Color.parseColor("#6b6b47"));
                 }
                 txttime.setText(ServiceTime.get(i));
+
                 container.addView(child);
+
+
 
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -216,6 +240,9 @@ public class MyServices extends AppCompatActivity {
                         cat = ServiceCat.get(index);
                         olaviat = ServiceOlaviat.get(index);
                         price = ServicePrice.get(index);
+
+                        requestId = RequestId.get(index);
+
 
                         index = ((LinearLayout) child.getParent()).indexOfChild(child);
                         Intent intent = new Intent(MyServices.this, MyServicesDetailes.class);
@@ -248,12 +275,13 @@ public class MyServices extends AppCompatActivity {
 
 
         try {
+
             SharedPreferences prefs = getSharedPreferences("INFO", MODE_PRIVATE);
 
             SoapObject Request = new SoapObject(NAMESPACE, METHOD_NAME);
             Request.addProperty("tokenId", "2085");
             Request.addProperty("tokenKey", "W/*@!&R~k^Ma$#._=N");
-            Request.addProperty("servicemanId", "2");
+            Request.addProperty("servicemanId", prefs.getString("servicemanId", "0"));
             Request.addProperty("state", "");
             // Request.addProperty("servicemanId", prefs.getString("servicemanId", "0"));
 
@@ -294,6 +322,10 @@ public class MyServices extends AppCompatActivity {
                 ServiceOlaviat.add(so.getPropertyAsString("priorityTitle"));
                 ServiceDesc.add(so.getPropertyAsString("desc"));
                 ServicePrice.add(so.getPropertyAsString("calculatedPrice"));
+                PicAddress.add(so.getPropertyAsString("servicePicAddress"));
+
+                RequestId.add(so.getPropertyAsString("serviceId"));
+
 
             }
 

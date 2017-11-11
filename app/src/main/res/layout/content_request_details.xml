@@ -6,28 +6,36 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.alizare.server.activities.MyServices"
-    tools:showIn="@layout/activity_request_details">
+    tools:showIn="@layout/content_request_details">
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/line" />
 
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        tools:layout_editor_absoluteY="8dp"
+        android:fillViewport="true"
+        >
 
         <LinearLayout
+            android:id="@+id/ll_mysrvices"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="10dp"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/ll_mysrvices"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="5dp">
-
 
                 <TextView
                     android:id="@+id/txt_title"
@@ -35,21 +43,15 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="right"
+                    android:padding="2dp"
                     android:textColor="#404040"
                     android:textSize="16sp"
                     tools:layout_editor_absoluteX="155dp"
                     tools:layout_editor_absoluteY="248dp" />
-
-                <TextView
-                    android:id="@+id/txt_fullname"
+                <Button
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:gravity="right"
-                    android:textColor="#404040"
-                    android:textSize="16sp"
-                    tools:layout_editor_absoluteX="155dp"
-                    tools:layout_editor_absoluteY="248dp" />
+                    android:layout_height="1dp"
+                    android:background="@drawable/linedark" />
 
                 <TextView
                     android:id="@+id/txt_cat_subcat"
@@ -57,10 +59,15 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="right"
+                    android:padding="2dp"
                     android:textColor="#404040"
                     android:textSize="16sp"
                     tools:layout_editor_absoluteX="155dp"
                     tools:layout_editor_absoluteY="248dp" />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/linedark" />
 
                 <TextView
                     android:id="@+id/txt_area"
@@ -68,45 +75,16 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="right"
+                    android:padding="2dp"
                     android:textColor="#404040"
                     android:textSize="16sp"
                     tools:layout_editor_absoluteX="155dp"
                     tools:layout_editor_absoluteY="248dp" />
-
-
-                <TextView
-                    android:id="@+id/txt_phone"
+                <Button
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:gravity="right"
-                    android:textColor="#404040"
-                    android:textSize="16sp"
-                    tools:layout_editor_absoluteX="155dp"
-                    tools:layout_editor_absoluteY="248dp" />
+                    android:layout_height="1dp"
+                    android:background="@drawable/linedark" />
 
-                <TextView
-                    android:id="@+id/txt_mobile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:gravity="right"
-                    android:textColor="#404040"
-                    android:textSize="16sp"
-                    tools:layout_editor_absoluteX="155dp"
-                    tools:layout_editor_absoluteY="248dp" />
-
-
-                <TextView
-                    android:id="@+id/txt_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:gravity="right"
-                    android:textColor="#404040"
-                    android:textSize="16sp"
-                    tools:layout_editor_absoluteX="155dp"
-                    tools:layout_editor_absoluteY="248dp" />
 
                 <TextView
                     android:id="@+id/txt_desc"
@@ -114,11 +92,16 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="right"
+                    android:padding="2dp"
                     android:textColor="#404040"
                     android:textSize="16sp"
                     tools:layout_editor_absoluteX="155dp"
                     tools:layout_editor_absoluteY="248dp" />
 
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/linedark" />
 
                 <TextView
                     android:id="@+id/txt_state"
@@ -126,10 +109,15 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="right"
+                    android:padding="2dp"
                     android:textColor="#404040"
                     android:textSize="16sp"
                     tools:layout_editor_absoluteX="155dp"
                     tools:layout_editor_absoluteY="248dp" />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/linedark" />
 
                 <TextView
                     android:id="@+id/txt_olaviat"
@@ -137,10 +125,15 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="right"
+                    android:padding="2dp"
                     android:textColor="#404040"
                     android:textSize="16sp"
                     tools:layout_editor_absoluteX="155dp"
                     tools:layout_editor_absoluteY="248dp" />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/linedark" />
 
                 <TextView
                     android:id="@+id/txt_price"
@@ -148,10 +141,15 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="right"
+                    android:padding="2dp"
                     android:textColor="#404040"
                     android:textSize="16sp"
                     tools:layout_editor_absoluteX="155dp"
                     tools:layout_editor_absoluteY="248dp" />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/linedark" />
 
                 <TextView
                     android:id="@+id/txt_time"
@@ -159,33 +157,37 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:gravity="right"
+                    android:padding="2dp"
                     android:textColor="#404040"
                     android:textSize="16sp"
                     tools:layout_editor_absoluteX="155dp"
                     tools:layout_editor_absoluteY="248dp" />
 
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="bottom"
+                android:layout_height="50dp"
+                android:gravity="bottom|center_vertical"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btn_select"
-                    style="@android:style/Widget.DeviceDefault.Button"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:background="@drawable/btn"
                     android:text="انتخاب درخواست"
+                    android:textColor="#fff"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
                     tools:layout_editor_absoluteX="231dp"
                     tools:layout_editor_absoluteY="876dp" />
             </LinearLayout>
 
         </LinearLayout>
+
 
     </ScrollView>
 

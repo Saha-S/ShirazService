@@ -62,7 +62,7 @@ public class AfzayeshEtebar extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("INFO", MODE_PRIVATE);
         etebarfelii= Integer.parseInt(prefs.getString("credit", "0"));
         Locale farsi = new Locale("fa", "IR");
-        NumberFormat numberFormatDutch = NumberFormat.getCurrencyInstance(farsi);
+        final NumberFormat numberFormatDutch = NumberFormat.getCurrencyInstance(farsi);
 
         String c = numberFormatDutch.format(new BigDecimal(etebarfelii));
         String cc = c.replace("ریال", "" + "\u200e");
@@ -95,14 +95,29 @@ public class AfzayeshEtebar extends AppCompatActivity {
                 if (isChecked) {
                     s10= 100000;
                     sum = s10 + s20 + s30 + s50+s100+s200;
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
+
+                    String b = numberFormatDutch.format(new BigDecimal(sum));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal(sum+etebarfelii));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (aa) + " ریال");
 
                 } else {
                     s10= 0;
                     sum = s10 + s20 + s30 + s50+s100+s200;
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
+                    String b = numberFormatDutch.format(new BigDecimal(sum));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal(sum+etebarfelii));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (aa) + " ریال");
 
 
                 }
@@ -113,16 +128,31 @@ public class AfzayeshEtebar extends AppCompatActivity {
                 if (isChecked) {
                     s20= 200000;
                     sum = s10 + s20 + s30 + s50+s100+s200;
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
+                    String b = numberFormatDutch.format(new BigDecimal(sum));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal(sum+etebarfelii));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (aa) + " ریال");
 
 
 
                 } else {
                     s20= 0;
                     sum = s10 + s20 + s30 + s50+s100+s200;
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
+
+                    String b = numberFormatDutch.format(new BigDecimal(sum));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal(sum+etebarfelii));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (aa) + " ریال");
 
 
                 }
@@ -133,15 +163,30 @@ public class AfzayeshEtebar extends AppCompatActivity {
                 if (isChecked) {
                     s30= 300000;
                     sum = s10 + s20 + s30 + s50+s100+s200;
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
 
+                    String b = numberFormatDutch.format(new BigDecimal(sum));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal(sum+etebarfelii));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (aa) + " ریال");
 
                 } else {
                     s30= 0;
                     sum = s10 + s20 + s30 + s50+s100+s200;
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
+
+                    String b = numberFormatDutch.format(new BigDecimal(sum));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal(sum+etebarfelii));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (aa) + " ریال");
 
 
                 }
@@ -152,15 +197,31 @@ public class AfzayeshEtebar extends AppCompatActivity {
                 if (isChecked) {
                     s50= 500000;
                     sum = s10 + s20 + s30 + s50+s100+s200;
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
+
+                    String b = numberFormatDutch.format(new BigDecimal(sum));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal(sum+etebarfelii));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (aa) + " ریال");
 
 
                 } else {
                     s50= 0;
                     sum = s10 + s20 + s30 + s50+s100+s200;
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
+
+                    String b = numberFormatDutch.format(new BigDecimal(sum));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal(sum+etebarfelii));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (aa) + " ریال");
 
 
                 }
@@ -171,16 +232,31 @@ public class AfzayeshEtebar extends AppCompatActivity {
                 if (isChecked) {
                     s100= 1000000;
                     sum = s10 + s20 + s30 + s50+s100+s200;
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
+
+                    String b = numberFormatDutch.format(new BigDecimal(sum));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal(sum+etebarfelii));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (aa) + " ریال");
 
 
                 } else {
                     s100= 0;
                     sum = s10 + s20 + s30 + s50+s100+s200;
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
 
+                    String b = numberFormatDutch.format(new BigDecimal(sum));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal(sum+etebarfelii));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (aa) + " ریال");
 
                 }
             }
@@ -190,15 +266,31 @@ public class AfzayeshEtebar extends AppCompatActivity {
                 if (isChecked) {
                     s200= 2000000;
                     sum = s10 + s20 + s30 + s50+s100+s200;
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
+
+                    String b = numberFormatDutch.format(new BigDecimal(sum));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal(sum+etebarfelii));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (aa) + " ریال");
 
 
                 } else {
                     s200= 0;
                     sum = s10 + s20 + s30 + s50+s100+s200;
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
+
+                    String b = numberFormatDutch.format(new BigDecimal(sum));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal(sum+etebarfelii));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (aa) + " ریال");
 
 
                 }
@@ -227,8 +319,16 @@ public class AfzayeshEtebar extends AppCompatActivity {
                     btn200.setEnabled(false);
                     btn200.setChecked(false);
 
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + Integer.parseInt(s.toString()) + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (Integer.parseInt(s.toString())+etebarfelii) + " ریال");
+                    String b = numberFormatDutch.format(new BigDecimal(Long.parseLong(s.toString())));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal((Long.parseLong(s.toString())+etebarfelii)));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + aa + " ریال");
 
 
                 }
@@ -251,8 +351,16 @@ public class AfzayeshEtebar extends AppCompatActivity {
                     btn200.setEnabled(true);
                     btn200.setChecked(false);
 
-                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + sum + " ریال");
-                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + (sum+etebarfelii) + " ریال");
+                    String b = numberFormatDutch.format(new BigDecimal(Long.parseLong(s.toString())));
+                    String bb = b.replace("ریال", "" + "\u200e");
+
+                    String a = numberFormatDutch.format(new BigDecimal((Long.parseLong(s.toString())+etebarfelii)));
+                    String aa = a.replace("ریال", "" + "\u200e");
+
+
+
+                    txtMeghdarEtebar.setText("افزایش اعتبار به مبلغ " + bb + " ریال");
+                    txtEtebarnaahaii.setText("اعتبار پس از افزایش " + aa + " ریال");
 
 
                 }

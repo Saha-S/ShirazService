@@ -15,9 +15,27 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        startActivity(new Intent(Splash.this, LoginActivity.class));
-        // close splash activity
-        finish();
+
+        Thread timer=new Thread()
+        {
+            public void run() {
+                try {
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                finally
+                {
+                    startActivity(new Intent(Splash.this, LoginActivity.class));
+                    // close splash activity
+                    finish();
+
+                }
+            }
+        };
+        timer.start();
+
 
     }
 
