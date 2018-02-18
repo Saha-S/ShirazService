@@ -21,12 +21,31 @@
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer"
         android:layout_gravity="right"
+        android:fitsSystemWindows="true"
         android:layoutDirection="rtl"
-        android:textDirection="rtl"
-        />
+        android:textDirection="rtl">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#eee"
+            android:orientation="vertical"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#eeeeee"
+                android:orientation="vertical">
+
+                <include
+                    layout="@layout/my_drawer_menu"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+        </ScrollView>
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

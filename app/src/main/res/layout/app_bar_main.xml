@@ -26,7 +26,7 @@
                  android:id="@+id/imageButton"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_marginRight="10dp"
+                 android:layout_marginLeft="10dp"
                  android:background="@drawable/icon" />
 
              <TextView
@@ -41,7 +41,7 @@
                  android:shadowRadius="3"
                  android:text="شیراز سرویس"
                  android:textColor="#ffffff"
-                 android:textSize="22sp" />
+                 android:textSize="20sp" />
 
              <ImageButton
                  android:id="@+id/ib_menu"

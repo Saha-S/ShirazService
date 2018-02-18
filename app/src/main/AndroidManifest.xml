@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.alizare.server">
+    package="com.rahbaran.shirazservice">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_shirazservice"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_shirazservice"
+        android:roundIcon="@drawable/logo"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
         <activity
@@ -28,55 +34,67 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.TransactionActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activities.MyServices"
             android:label="@string/title_activity_my_services"
-            android:theme="@style/AppThemeNoActionBar" />
+            android:theme="@style/AppThemeNoActionBar">
+            <intent-filter>
+                <action android:name="com.mypackage.MyActivty_TARGET" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.Ghavanin"
             android:label="@string/title_activity_ghavanin"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppThemeNoActionBar">
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.alizare.server.activities.MainActivity" />
+                android:value="com.rahbaran.shirazservice.activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.AfzayeshEtebar"
             android:label="@string/title_activity_afzayesh_etebar"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/AppThemeNoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.alizare.server.activities.MainActivity" />
+                android:value="com.rahbaran.shirazservice.activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.InsertPayInfo"
             android:label="@string/title_activity_insert_pay_info"
             android:parentActivityName=".activities.AfzayeshEtebar"
-            android:theme="@style/AppThemeNoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.alizare.server.activities.AfzayeshEtebar" />
+                android:value="com.rahbaran.shirazservice.activities.AfzayeshEtebar" />
         </activity>
         <activity
             android:name=".activities.MyServicesDetailes"
             android:label="جزئیات سرویس"
             android:parentActivityName=".activities.MyServices"
-            android:theme="@style/AppThemeNoActionBar">
+            android:theme="@style/AppThemeNoActionBar"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.alizare.server.activities.MyServices" />
+                android:value="com.rahbaran.shirazservice.activities.MyServices" />
         </activity>
         <activity
             android:name=".activities.RequestDetails"
@@ -85,15 +103,39 @@
             android:theme="@style/AppThemeNoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.alizare.server.activities.MainActivity" />
+                android:value="com.rahbaran.shirazservice.activities.MainActivity" />
         </activity>
 
+        <!-- Firebase Notifications -->
+        <service android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- ./Firebase Notifications -->
+
+        <activity android:name="ir.moslem_deris.apps.zarinpal.PaymentActivity" />
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity
-            android:name=".activities.Filter"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.float" />
-
-
+            android:name=".activities.MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
     </application>
 
 </manifest>

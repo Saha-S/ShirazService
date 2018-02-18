@@ -11,8 +11,10 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_afzayesh_etebar">افزایش اعتبار</string>
-    <string name="title_activity_insert_pay_info">ورود اطلاعات واریز</string>
-    <string name="insertInfo">ثبت اطلاعات حسابی که باید از آن واریز کنید.</string>
-    <string name="insert">پس از تایید توسط کاشناسان اعتبار شما افزایش خواهد یافت</string>
+    <string name="title_activity_insert_pay_info">درج اطلاعات واریز</string>
+    <string name="insertInfo"></string>
+    <string name="insert">پس از تأیید توسط کارشناسان اعتبار شما افزایش خواهد یافت</string>
     <string name="title_activity_my_services2">نمایش اطلاعات دقیق سرویس</string>
+    <string name="title_activity_maps">نقشه</string>
+
 </resources>

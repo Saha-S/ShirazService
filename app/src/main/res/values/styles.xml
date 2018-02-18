@@ -21,7 +21,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:typeface">serif</item>
-        <item name="colorButtonNormal">#ab0001</item>
+        <item name="colorButtonNormal">#cccccc</item>
     </style>
 
 
@@ -40,9 +40,17 @@
     </style>
 
     <style name="RatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">#fec100</item>
+        <item name="colorControlNormal">#ffffff</item>\
+        <item name="colorControlActivated">#fec100</item>
+
 
     </style>
 
+    <style name="Progressbar.White" parent="AppTheme">
+        <item name="colorControlActivated">#e7393a</item>
+        <item name="android:minHeight">2dip</item>
+        <item name="android:maxHeight">2dip</item>
+
+    </style>
 
 </resources>
