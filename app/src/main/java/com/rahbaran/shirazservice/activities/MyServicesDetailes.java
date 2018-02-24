@@ -108,14 +108,6 @@ public class MyServicesDetailes extends AppCompatActivity implements NavigationV
 
         final TextView stitle = (TextView)findViewById(R.id.stitle);
 
-
-
-
-
-
-
-
-
         ConnectivityManager connManager = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
@@ -685,7 +677,7 @@ public class MyServicesDetailes extends AppCompatActivity implements NavigationV
                             }
 
 
-                            fullname.setText(Html.fromHtml("<b> نام و نام خانودگی: </b>"+result.getPropertyAsString("personName")));
+                            fullname.setText(Html.fromHtml("<b> نام و نام خانوادگی: </b>"+result.getPropertyAsString("personName")));
                             title.setText(Html.fromHtml("<b>عنوان درخواست: </b>"+result.getPropertyAsString("serviceTitle")));
                             phone.setText(Html.fromHtml("<b> شماره تلفن ثابت: </b>"+result.getPropertyAsString("phone")));
                             address.setText(Html.fromHtml("<b>آدرس: </b>"+ result.getPropertyAsString("address")));
@@ -737,8 +729,12 @@ public class MyServicesDetailes extends AppCompatActivity implements NavigationV
                             mapFragment.getMapAsync(MyServicesDetailes.this);
 
 
-                            mapLayout.setVisibility(View.VISIBLE);
+                            if(lat.equals("0") && lng.equals("0")){
+                                mapLayout.setVisibility(View.GONE);
 
+                            }else {
+                                mapLayout.setVisibility(View.VISIBLE);
+                            }
 
 
 
@@ -1155,6 +1151,7 @@ private class AsyncCallWSFinishRequest extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPostExecute(Void result) {
+            ll.setVisibility(View.VISIBLE);
 
         }
 
@@ -1275,8 +1272,27 @@ private class AsyncCallWSFinishRequest extends AsyncTask<Void, Void, Void> {
                             }
 
                             LinearLayout llLast  = (LinearLayout) findViewById(R.id.ll_last);
-
-                            fullname.setText(Html.fromHtml("<b> نام و نام خانودگی: </b>"+result.getPropertyAsString("personName")));
+//////////////////////////////////////
+//////////////////////////////////////
+//////////////////////////////////////
+//////////////////////////////////////
+//////////////////////////////////////
+//////////////////////////////////////
+//////////////////////////////////////
+//////////////////////////////////////
+//////////////////////////////////////
+//////////////////////////////////////
+//////////////////////////////////////
+                            llLast.setVisibility(View.VISIBLE);
+                            if(MyServices.state.toString().equals("1") || MyServices.state.toString().equals("2")) {
+                                select.setVisibility(View.VISIBLE);
+                                finish.setVisibility(View.GONE);
+                            }
+                            if(MyServices.state.toString().equals("3") ) {
+                                select.setVisibility(View.GONE);
+                                finish.setVisibility(View.GONE);
+                            }
+                                fullname.setText(Html.fromHtml("<b> نام و نام خانوادگی: </b>"+result.getPropertyAsString("personName")));
                             title.setText(Html.fromHtml("<b>عنوان درخواست: </b>"+result.getPropertyAsString("serviceTitle")));
                             cat.setText(Html.fromHtml("<b> گروه و زیر گروه:</b> "+result.getPropertyAsString("catTitle")+" - "+result.getPropertyAsString("subCatTitle")) );
                             area.setText(Html.fromHtml("<b>محدوده: </b>"+result.getPropertyAsString("areaTitle")));

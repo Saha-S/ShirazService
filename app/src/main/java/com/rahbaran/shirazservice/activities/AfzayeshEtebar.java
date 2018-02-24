@@ -237,8 +237,9 @@ public class AfzayeshEtebar extends AppCompatActivity implements NavigationView.
         raw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AfzayeshEtebar.this , Ghavanin.class);
-                startActivity(intent);
+                String url = "http://shiraz-service.ir/terms/";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));                startActivity(intent);
             }
         });
         call.setOnClickListener(new View.OnClickListener() {

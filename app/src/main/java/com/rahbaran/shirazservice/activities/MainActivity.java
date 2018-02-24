@@ -937,8 +937,10 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         raw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            Intent intent = new Intent(MainActivity.this , Ghavanin.class);
-            startActivity(intent);
+                String url = "http://shiraz-service.ir/terms/";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
         }
         });
         call.setOnClickListener(new View.OnClickListener() {
@@ -1067,29 +1069,30 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         ////////////////////////// NOTIFICATION ///////////////////
 
         if (getIntent().getExtras() != null) {
-            for (String key : getIntent().getExtras().keySet()) {
-                String value = getIntent().getExtras().getString(key);
+            if(!prefs.getString("servicemanId", "00").toString().equals("00")) {
+                for (String key : getIntent().getExtras().keySet()) {
+                    String value = getIntent().getExtras().getString(key);
 
-                if (key.equals("mod") && ( value.equals("Confirm")  )) {
-                    Intent intent = new Intent(this, MyServicesDetailes.class);
-                    intent.putExtra("value", value);
-                    MyServices.state="4";
-                    intent.putExtra("PUSH", "push");
+                    if (key.equals("mod") && (value.equals("Confirm"))) {
+                        Intent intent = new Intent(this, MyServicesDetailes.class);
+                        intent.putExtra("value", value);
+                        MyServices.state = "4";
+                        intent.putExtra("PUSH", "push");
 
-                    startActivity(intent);
-                    finish();
+                        startActivity(intent);
+                        finish();
 
-                }
-                if (key.equals("mod") &&  value.equals("Reject") ) {
-                    Intent intent = new Intent(this, MyServicesDetailes.class);
-                    intent.putExtra("value", value);
-                    MyServices.state="3";
-                    intent.putExtra("PUSH", "push");
+                    }
+                    if (key.equals("mod") && value.equals("Reject")) {
+                        Intent intent = new Intent(this, MyServicesDetailes.class);
+                        intent.putExtra("value", value);
+                        MyServices.state = "3";
+                        intent.putExtra("PUSH", "push");
 
-                    startActivity(intent);
-                    finish();
+                        startActivity(intent);
+                        finish();
 
-                }
+                    }
 //                if (key.equals("mod") && ( value.equals("Pickup")  )) {
 //                    Intent intent = new Intent(this, MyServicesDetailes.class);
 //                    intent.putExtra("value", value);
@@ -1101,37 +1104,47 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
 //
 //                }
 
-                if (key.equals("mod") && (  value.equals("Cancel") )) {
-                    Intent intent = new Intent(this, MyServicesDetailes.class);
-                    intent.putExtra("value", value);
-                    MyServices.state="3";
-                    intent.putExtra("PUSH", "push");
+                    if (key.equals("mod") && (value.equals("Cancel"))) {
+                        Intent intent = new Intent(this, RequestDetails.class);
+                        intent.putExtra("value", value);
+                        // MyServices.state="3";
+                        intent.putExtra("PUSH", "push");
 
-                    startActivity(intent);
-                    finish();
+                        startActivity(intent);
+                        finish();
+
+                    }
+                    if (key.equals("mod") && (value.equals("New"))) {
+                        Intent intent = new Intent(this, RequestDetails.class);
+                        intent.putExtra("value", value);
+                        // MyServices.state="100";
+                        intent.putExtra("PUSH", "push");
+
+                        startActivity(intent);
+                        finish();
+
+                    }
+                    if (key.equals("mod") && (value.equals("Return"))) {
+                        Intent intent = new Intent(this, RequestDetails.class);
+                        intent.putExtra("value", value);
+                        // MyServices.state="100";
+                        intent.putExtra("PUSH", "push");
+
+                        startActivity(intent);
+                        finish();
+
+                    }
+
+
+                    if (key.equals("mod") && (value.equals("Notice"))) {
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+
 
                 }
-                if (key.equals("mod") && (  value.equals("New") )) {
-                    Intent intent = new Intent(this, MyServicesDetailes.class);
-                    intent.putExtra("value", value);
-                    MyServices.state="100";
-                    intent.putExtra("PUSH", "push");
-
-                    startActivity(intent);
-                    finish();
-
-                }
-
-
-                if (key.equals("mod") && (  value.equals("Notice")  )) {
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-
-                }
-
-
-
             }
         }
 

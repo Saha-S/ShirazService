@@ -90,6 +90,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra("mod", mod);
        // intent.putExtra("requestId", requestId);
         MyServices.requestId = requestId;
+        MainActivity.requestId = requestId;
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

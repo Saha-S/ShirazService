@@ -3,6 +3,7 @@ package com.rahbaran.shirazservice.activities;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -18,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
@@ -59,6 +61,17 @@ public class RequestDetails extends AppCompatActivity implements NavigationView.
     LinearLayout ll;
     Button select;
     private TextView txtEtebar;
+    private TextView cat;
+    private TextView area;
+    private TextView time;
+    private TextView state;
+    private TextView olaviat;
+    private TextView price;
+    private TextView timeDesc;
+    private TextView dateFromPersian;
+    private TextView dateToPersian;
+    private TextView title;
+    private TextView desc;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -77,20 +90,43 @@ public class RequestDetails extends AppCompatActivity implements NavigationView.
         App.dialog.setCancelable(false);
         App.dialog.setContentView(R.layout.loading);
 
-
         ImageButton back1 = (ImageButton)  findViewById(R.id.back_ib);
         LinearLayout back = (LinearLayout)  findViewById(R.id.ll_back);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+
+                Bundle extras = getIntent().getExtras();
+                if(extras == null) {
+                    finish();
+                } else {
+                    String newString= extras.getString("PUSH");
+                    if(newString.equals("push")){
+                        Intent intent = new Intent(RequestDetails.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                }
+
             }
         });
         back1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Bundle extras = getIntent().getExtras();
+                if(extras == null) {
+                    finish();
+                } else {
+                    String newString= extras.getString("PUSH");
+                    if(newString.equals("push")){
+                        Intent intent = new Intent(RequestDetails.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                }
             }
         });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -198,8 +234,9 @@ public class RequestDetails extends AppCompatActivity implements NavigationView.
         raw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RequestDetails.this , Ghavanin.class);
-                startActivity(intent);
+                String url = "http://shiraz-service.ir/terms/";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));                startActivity(intent);
             }
         });
         call.setOnClickListener(new View.OnClickListener() {
@@ -296,122 +333,27 @@ public class RequestDetails extends AppCompatActivity implements NavigationView.
         ll = (LinearLayout) findViewById(R.id.ll_mysrvices);
         select = (Button) findViewById(R.id.btn_select);
 
-     //   ll.setVisibility(View.GONE);
-       // select.setVisibility(View.GONE);
+        ll.setVisibility(View.GONE);
+        select.setVisibility(View.GONE);
 
-        TextView title = (TextView) findViewById(R.id.txt_title);
-        TextView desc = (TextView) findViewById(R.id.txt_desc);
+        title = (TextView) findViewById(R.id.txt_title);
+        desc = (TextView) findViewById(R.id.txt_desc);
 
-        TextView cat = (TextView) findViewById(R.id.txt_cat_subcat);
-        TextView area = (TextView) findViewById(R.id.txt_area);
-        TextView time = (TextView) findViewById(R.id.txt_time);
-        TextView state = (TextView) findViewById(R.id.txt_state);
-        TextView olaviat = (TextView) findViewById(R.id.txt_olaviat);
-        TextView price = (TextView) findViewById(R.id.txt_price);
-        TextView timeDesc = (TextView) findViewById(R.id.txt_timeDesc);
-        TextView dateFromPersian  = (TextView) findViewById(R.id.dateFromPersian);
-        TextView dateToPersian  = (TextView) findViewById(R.id.dateToPersian);
-
-
-        title.setText(Html.fromHtml("<b>عنوان درخواست: </b>"+ MainActivity.stitle));
-        cat.setText(Html.fromHtml("<b> گروه و زیر گروه:</b> "+ MainActivity.cat) );
-        area.setText(Html.fromHtml("<b>محدوده: </b>"+ MainActivity.area));
-        time.setText(Html.fromHtml("<b>تاریخ ثبت: </b>"+ MainActivity.time));
-        state.setText(Html.fromHtml("<b>وضعیت درخواست:</b> "+ MainActivity.stat));
-        olaviat.setText(Html.fromHtml("<b>اولویت درخواست: </b>"+ MainActivity.olaviat));
-        timeDesc.setText(Html.fromHtml("<b>ساعت مطلوب: </b>"+ MainActivity.timeDesc));
-        dateToPersian.setText(Html.fromHtml("<b>تاریخ انجام تا: </b>"+ MainActivity.dateToPersian));
-        dateFromPersian.setText(Html.fromHtml("<b>تاریخ انجام از: </b>"+ MainActivity.dateFromPersian));
-        desc.setText(Html.fromHtml("<b>توضیحات:</b> "+ MainActivity.desc));
-
-        String s = MainActivity.price;
+        cat = (TextView) findViewById(R.id.txt_cat_subcat);
+        area = (TextView) findViewById(R.id.txt_area);
+        time = (TextView) findViewById(R.id.txt_time);
+        state = (TextView) findViewById(R.id.txt_state);
+        olaviat = (TextView) findViewById(R.id.txt_olaviat);
+        price = (TextView) findViewById(R.id.txt_price);
+        timeDesc = (TextView) findViewById(R.id.txt_timeDesc);
+        dateFromPersian  = (TextView) findViewById(R.id.dateFromPersian);
+        dateToPersian  = (TextView) findViewById(R.id.dateToPersian);
 
 
 
-        String q = numberFormatDutch.format(new BigDecimal(s.toString()));
-        final String qq = q.replace("ریال", " " + "\u200e");
-
-        String styledText = " <font color='red'>"+qq+"</font>";
-
-        price.setText(Html.fromHtml("<b>هزینه محاسبه شده:</b> "+ "<b>"+styledText+"</b>" + "ریال"));
-
-
-
-        select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Dialog dialog = new Dialog(RequestDetails.this);
-                dialog.setContentView(R.layout.dialog);
-                dialog.setTitle("انتخاب درخواست");
-
-                // set the custom dialog components - text, image and button
-                TextView title = (TextView) dialog.findViewById(R.id.dialog_title);
-                TextView txt1 = (TextView) dialog.findViewById(R.id.dialog_txt);
-                TextView txt2 = (TextView) dialog.findViewById(R.id.dialog_txt2);
-                TextView price = (TextView) dialog.findViewById(R.id.dialog_price);
-                TextView priceType = (TextView) dialog.findViewById(R.id.dialog_price_type);
-              //  title.setText("افزایش اعتبار");
-                txt1.setText("با انتخاب این سرویس مبلغ");
-                txt2.setText("از حساب شما کسر خواهد شد. آیا مطمئن هستید؟");
-                price.setText(qq);
-                priceType.setText(" ریال");
-
-                Button yes = (Button) dialog.findViewById(R.id.dialog_yes);
-                Button no = (Button) dialog.findViewById(R.id.dialog_no);
-                // if button is clicked, close the custom dialog
-                yes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ConnectivityManager connManager = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-                        dialog.dismiss();
-                        if (mWifi.isConnected() || isMobileDataEnabled()) {
-                            App.dialog.show();
-                            RequestDetails.AsyncCallWSSelectRequest task = new RequestDetails.AsyncCallWSSelectRequest();
-                            task.execute();
-                        }else {
-                            final Dialog dialog = new Dialog(RequestDetails.this,android.R.style.Theme_Black_NoTitleBar);
-                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            dialog.setContentView(R.layout.internetdialog);
-
-
-
-                            Button yes = (Button) dialog.findViewById(R.id.dialog_yes);
-                            Button no = (Button) dialog.findViewById(R.id.dialog_no);
-                            // if button is clicked, close the custom dialog
-                            yes.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    ConnectivityManager connManager = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                                    final NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-                                    if (mWifi.isConnected() || isMobileDataEnabled()) {
-
-                                        App.dialog.show();
-                                        RequestDetails.AsyncCallWSSelectRequest task = new RequestDetails.AsyncCallWSSelectRequest();
-                                        task.execute();
-
-                                        dialog.dismiss();
-                                    }
-                                }
-                            });
-
-                            dialog.show();                        }
-                    }
-                });
-                no.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        App.dialog.hide();
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-
-            }
-        });
+        App.dialog.show();
+        RequestDetails.AsyncCallGetInfo taskInfo = new RequestDetails.AsyncCallGetInfo();
+        taskInfo.execute();
 
     }
 
@@ -558,7 +500,248 @@ public class RequestDetails extends AppCompatActivity implements NavigationView.
             return null;
         }
     }
+    private class AsyncCallGetInfo extends AsyncTask<Void, Void, Void> {
 
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            getInfo();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+
+        }
+
+    }
+
+
+    public void getInfo() {
+
+        String SOAP_ACTION = "http://shiraz-service.ir/webServiceServer.php?wsdl#getRequestInfo";
+        String METHOD_NAME = "getRequestInfo";
+        String NAMESPACE = "http://shiraz-service.ir/webServiceServer.php?wsdl";
+        String URL = "http://shiraz-service.ir/webServiceServer.php?wsdl";
+
+//stuff that updates ui
+
+       // Log.i("lllllllll" , MainActivity.requestId);
+
+        try {
+            SoapObject Request = new SoapObject(NAMESPACE, METHOD_NAME);
+            SharedPreferences prefs = getSharedPreferences("INFO", MODE_PRIVATE);
+            Request.addProperty("tokenId", "2085");
+            Request.addProperty("tokenKey", "W/*@!&R~k^Ma$#._=N");
+            Request.addProperty("requestId", MainActivity.requestId);
+            Request.addProperty("servicemanId", prefs.getString("servicemanId", "0"));
+            //Request.addProperty("Celsius", getCel);
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.dotNet = true;
+
+
+            // Set output SOAP object
+            envelope.setOutputSoapObject(Request);
+
+            // Create HTTP call object
+            HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+            androidHttpTransport.debug = true;
+
+            SoapObject response;
+
+            // StringBuffer result = null;
+
+            System.setProperty("http.keepAlive", "false");
+
+            androidHttpTransport.call(SOAP_ACTION, envelope);
+
+            final SoapObject result = (SoapObject) envelope.getResponse();
+
+
+            new Thread()
+            {
+                public void run()
+                {
+                    RequestDetails.this.runOnUiThread(new Runnable()
+                    {
+                        public void run()
+                        {
+                            Log.i("lllllllll22" , result.getPropertyAsString("serviceTitle")+"--");
+
+                            title.setText(Html.fromHtml("<b>عنوان درخواست: </b>"+ result.getPropertyAsString("serviceTitle")));
+                            cat.setText(Html.fromHtml("<b> گروه و زیر گروه:</b> "+ result.getPropertyAsString("catTitle")+" - "+result.getPropertyAsString("subCatTitle")) );
+                            area.setText(Html.fromHtml("<b>محدوده: </b>"+result.getPropertyAsString("areaTitle")));
+                            state.setText(Html.fromHtml("<b>وضعیت درخواست:</b> "+ result.getPropertyAsString("stateTitle")));
+                            time.setText(Html.fromHtml("<b>تاریخ ثبت: </b>"+result.getPropertyAsString("insrtTimePersian")));
+                            olaviat.setText(Html.fromHtml("<b>اولویت درخواست: </b>"+result.getPropertyAsString("priorityTitle")));
+                            timeDesc.setText(Html.fromHtml("<b>ساعت مطلوب: </b>"+result.getPropertyAsString("timeDesc")));
+                            dateToPersian.setText(Html.fromHtml("<b>تاریخ انجام تا: </b>"+ result.getPropertyAsString("dateToPersian")));
+                            dateFromPersian.setText(Html.fromHtml("<b>تاریخ انجام از: </b>"+ result.getPropertyAsString("dateFromPersian")));
+                            Locale farsi = new Locale("fa", "IR");
+                            NumberFormat numberFormatDutch = NumberFormat.getCurrencyInstance(farsi);
+
+                            String s = result.getPropertyAsString("calculatedPrice");
+                            String c = numberFormatDutch.format(new BigDecimal(s.toString()));
+                            final String cc = c.replace("ریال", " " + "\u200e");
+
+                            String styledText = " <font color='red'>"+cc+"</font>";
+
+                            price.setText(Html.fromHtml("<b>هزینه محاسبه شده:</b> "+ "<b>"+styledText+"</b>" + "ریال"));
+                            desc.setText(Html.fromHtml("<b>توضیحات:</b> "+result.getPropertyAsString("desc")));
+
+
+
+
+
+                            select.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    final Dialog dialog = new Dialog(RequestDetails.this);
+                                    dialog.setContentView(R.layout.dialog);
+                                    dialog.setTitle("انتخاب درخواست");
+
+                                    // set the custom dialog components - text, image and button
+                                    TextView title = (TextView) dialog.findViewById(R.id.dialog_title);
+                                    TextView txt1 = (TextView) dialog.findViewById(R.id.dialog_txt);
+                                    TextView txt2 = (TextView) dialog.findViewById(R.id.dialog_txt2);
+                                    TextView price = (TextView) dialog.findViewById(R.id.dialog_price);
+                                    TextView priceType = (TextView) dialog.findViewById(R.id.dialog_price_type);
+                                    //  title.setText("افزایش اعتبار");
+                                    txt1.setText("با انتخاب این سرویس مبلغ");
+                                    txt2.setText("از حساب شما کسر خواهد شد. آیا مطمئن هستید؟");
+                                    price.setText(cc);
+                                    priceType.setText(" ریال");
+
+                                    Button yes = (Button) dialog.findViewById(R.id.dialog_yes);
+                                    Button no = (Button) dialog.findViewById(R.id.dialog_no);
+                                    // if button is clicked, close the custom dialog
+                                    yes.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            ConnectivityManager connManager = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                                            NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+                                            dialog.dismiss();
+                                            if (mWifi.isConnected() || isMobileDataEnabled()) {
+                                                App.dialog.show();
+                                                RequestDetails.AsyncCallWSSelectRequest task = new RequestDetails.AsyncCallWSSelectRequest();
+                                                task.execute();
+                                            }else {
+                                                final Dialog dialog = new Dialog(RequestDetails.this,android.R.style.Theme_Black_NoTitleBar);
+                                                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                                dialog.setContentView(R.layout.internetdialog);
+
+
+
+                                                Button yes = (Button) dialog.findViewById(R.id.dialog_yes);
+                                                Button no = (Button) dialog.findViewById(R.id.dialog_no);
+                                                // if button is clicked, close the custom dialog
+                                                yes.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        ConnectivityManager connManager = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                                                        final NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+                                                        if (mWifi.isConnected() || isMobileDataEnabled()) {
+
+                                                            App.dialog.show();
+                                                            RequestDetails.AsyncCallWSSelectRequest task = new RequestDetails.AsyncCallWSSelectRequest();
+                                                            task.execute();
+
+                                                            dialog.dismiss();
+                                                        }
+                                                    }
+                                                });
+
+                                                dialog.show();                        }
+                                        }
+                                    });
+                                    no.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            App.dialog.hide();
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                    dialog.show();
+
+                                }
+                            });
+
+//                            fullname.setText(Html.fromHtml("<b> نام و نام خانودگی: </b>"+result.getPropertyAsString("personName")));
+//                            title.setText(Html.fromHtml("<b>عنوان درخواست: </b>"+result.getPropertyAsString("serviceTitle")));
+//                            cat.setText(Html.fromHtml("<b> گروه و زیر گروه:</b> "+result.getPropertyAsString("catTitle")+" - "+result.getPropertyAsString("subCatTitle")) );
+//                            area.setText(Html.fromHtml("<b>محدوده: </b>"+result.getPropertyAsString("areaTitle")));
+//                            time.setText(Html.fromHtml("<b>تاریخ ثبت: </b>"+result.getPropertyAsString("insrtTimePersian")));
+//                            olaviat.setText(Html.fromHtml("<b>اولویت درخواست: </b>"+result.getPropertyAsString("priorityTitle")));
+//                            timeDesc.setText(Html.fromHtml("<b>ساعت مطلوب: </b>"+result.getPropertyAsString("timeDesc")));
+//                            dateToPersian.setText(Html.fromHtml("<b>تاریخ انجام تا: </b>"+ result.getPropertyAsString("dateToPersian")));
+//                            dateFromPersian.setText(Html.fromHtml("<b>تاریخ انجام از: </b>"+ result.getPropertyAsString("dateFromPersian")));
+//                            Locale farsi = new Locale("fa", "IR");
+//                            NumberFormat numberFormatDutch = NumberFormat.getCurrencyInstance(farsi);
+//
+//                            String s = result.getPropertyAsString("calculatedPrice");
+//                            String c = numberFormatDutch.format(new BigDecimal(s.toString()));
+//                            String cc = c.replace("ریال", " " + "\u200e");
+//
+//                            String styledText = " <font color='red'>"+cc+"</font>";
+//                            priceee  = styledText;
+//
+//                            price.setText(Html.fromHtml("<b>هزینه محاسبه شده:</b> "+ "<b>"+styledText+"</b>" + "ریال"));
+//                            desc.setText(Html.fromHtml("<b>توضیحات:</b> "+result.getPropertyAsString("desc")));
+                            ll.setVisibility(View.VISIBLE);
+                            select.setVisibility(View.VISIBLE);
+
+                            App.dialog.dismiss();
+
+                        }
+                    });
+                }
+            }.start();
+
+
+
+        } catch (SoapFault soapFault) {
+            soapFault.printStackTrace();
+            App.dialog.dismiss();
+
+        } catch (IOException e) {
+            Log.d("Error", "Some exception occurred", e);
+            App.dialog.dismiss();
+
+        } catch (XmlPullParserException e) {
+            Log.d("Error", "Some exception occurred", e);
+            App.dialog.dismiss();
+
+        } catch (NetworkOnMainThreadException e) {
+            Log.d("Error", "Some exception occurred", e);
+            App.dialog.dismiss();
+
+        }
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            finish();
+        } else {
+            String newString= extras.getString("PUSH");
+            if(newString.equals("push")){
+                Intent intent = new Intent(RequestDetails.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        }
+    }
 
 
 }

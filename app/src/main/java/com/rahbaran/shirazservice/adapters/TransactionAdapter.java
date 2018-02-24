@@ -15,8 +15,10 @@ import android.widget.TextView;
 import com.rahbaran.shirazservice.App;
 import com.rahbaran.shirazservice.R;
 import com.rahbaran.shirazservice.Transaction;
+import com.rahbaran.shirazservice.activities.MainActivity;
 import com.rahbaran.shirazservice.activities.MyServices;
 import com.rahbaran.shirazservice.activities.MyServicesDetailes;
+import com.rahbaran.shirazservice.activities.RequestDetails;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -154,9 +156,9 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             holder.request.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent= new Intent(App.context , MyServicesDetailes.class);
-                    MyServices.requestId = filterPoster.get(position).requestId;
-                    MyServices.state = "00";
+                    Intent intent= new Intent(App.context , RequestDetails.class);
+                    MainActivity.requestId = filterPoster.get(position).requestId;
+                   // MyServices.state = "00";
                     MyServices.serviceId = "";
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

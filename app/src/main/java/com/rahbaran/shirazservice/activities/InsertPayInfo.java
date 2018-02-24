@@ -223,8 +223,9 @@ public class InsertPayInfo extends AppCompatActivity implements TimePickerDialog
         raw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(InsertPayInfo.this , Ghavanin.class);
-                startActivity(intent);
+                String url = "http://shiraz-service.ir/terms/";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));                startActivity(intent);
             }
         });
         call.setOnClickListener(new View.OnClickListener() {

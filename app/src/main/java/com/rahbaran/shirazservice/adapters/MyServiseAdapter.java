@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -170,6 +171,7 @@ try {
         @Override
         public void onClick(View v) {
             try {
+                Log.i("pppppppppp",filterPoster.get(position).reqId+"--");
                 Intent intent = new Intent(App.context, MyServicesDetailes.class);
             MyServices.requestId = filterPoster.get(position).reqId;
             MyServices.state = filterPoster.get(position).state;

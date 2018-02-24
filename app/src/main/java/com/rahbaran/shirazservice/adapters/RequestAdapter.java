@@ -362,6 +362,8 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.PosterHo
             Request.addProperty("servicemanId", prefs.getString("servicemanId", "0"));
             //Request.addProperty("Celsius", getCel);
 
+            Log.i("pppppppppp22",requestId+"--");
+
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
 
